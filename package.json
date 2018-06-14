@@ -19,6 +19,7 @@
     "babel-preset-react-app": "^3.1.1",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-prettier": "^2.6.0",
-    "prettier": "^1.13.5"
+    "prettier": "^1.13.5",
+    "react-test-renderer": "^16.4.1"
   }
 }

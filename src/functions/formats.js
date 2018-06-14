@@ -8,26 +8,41 @@ const leftPad = c => n => x =>
 export const formatAs = fmt => x => {
   switch (fmt) {
     case "DOLLAR":
-      return `$${leftPad("0")(3)(x)
-        .replace(/([0-9]{2})$/, ".$1")
-        .replace(/\B(?=(\d{3})+(?=\.))/g, ",")}`
+      return x
+    // return `$${leftPad("0")(3)(x)
+    //   .replace(/([0-9]{2})$/, ".$1")
+    //   .replace(/\B(?=(\d{3})+(?=\.))/g, ",")}`
     case "PERCENT":
-      return `${Math.round(x * 1000) / 10}%`
+      return x
+    // return `${Math.round(x * 10) / 10}`
     case "NUMBER":
-      return (+x).toLocaleString("en-us")
+      return x
+    // return (+x).toLocaleString("en-us")
     default:
       return ""
   }
 }
 
+const removeNonDigit = str =>
+  str.replace(/[^0-9|\.]/g, "").replace(/^0*(\d+.*)/, "$1")
+
 // parse :: Format -> String -> String
-export const parseAs = fmt => str => {
+export const parseFrom = fmt => str => {
   switch (fmt) {
-    case "CENT":
-      return str.replace(/[^0-9]/g, "").replace(/^0*(\d+)/, "$1")
+    case "DOLLAR":
+      return str
+    // return str.replace(/[^0-9]/g, "").replace(/^0*(\d+)/, "$1")
+    case "PERCENT":
+      return str
+    // return `${
+    //   typeof parseInt(removeNonDigit(str)) === "number"
+    //     ? typeof parseInt(removeNonDigit(str))
+    //     : str
+    // }`
     case "NUMBER":
-      return str.replace(/[^0-9]/g, "").replace(/^0*(\d+)/, "$1")
+      return str
+    // return str.replace(/[^0-9]/g, "").replace(/^0*(\d+)/, "$1")
     default:
-      return undefined
+      return ""
   }
 }
