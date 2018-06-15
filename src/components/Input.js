@@ -1,6 +1,9 @@
 import React from "react"
 import styled from "styled-components"
 import { formatAs, parseFrom } from "../functions/formats"
+import { compose } from "ramda"
+
+const id = x => x
 
 const Input = styled.input`
   padding: 0.2rem;
@@ -27,9 +30,17 @@ export default ({ name, type, value, title, update, formatFmt, parseFmt }) => (
       <Input
         type={type || "text"}
         id={name}
-        value={formatAs(formatFmt)(value) || ""}
-        empty={!+value}
-        onChange={e => update(parseFrom(parseFmt)(e.target.value))}
+        value={value || ""}
+        empty={value === ""}
+        onChange={e => update(e.target.value)}
+        // onFocus={e => update(parseFrom(parseFmt)(e.target.value))}
+        // onBlur={e =>
+        //   compose(
+        //     update,
+        //     formatAs(formatFmt),
+        //     parseFrom(parseFmt)
+        //   )(e.target.value)
+        // }
       />
     </Label>
   </div>
