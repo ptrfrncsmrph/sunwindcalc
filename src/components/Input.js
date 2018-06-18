@@ -18,12 +18,15 @@ const Input = styled.input`
 `
 
 const Label = styled.label`
+  font-family: "Circular Std";
   max-width: 800px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 8rem;
+  border-bottom: 1px dotted black;
+  margin-bottom: 0.5rem;
 `
 
-export default ({ name, type, value, title, update, formatFmt, parseFmt }) => (
+export default ({ name, type, value, title, update, fmt }) => (
   <div>
     <Label htmlFor={name}>
       {title || name}
@@ -33,14 +36,14 @@ export default ({ name, type, value, title, update, formatFmt, parseFmt }) => (
         value={value || ""}
         empty={value === ""}
         onChange={e => update(e.target.value)}
-        // onFocus={e => update(parseFrom(parseFmt)(e.target.value))}
-        // onBlur={e =>
-        //   compose(
-        //     update,
-        //     formatAs(formatFmt),
-        //     parseFrom(parseFmt)
-        //   )(e.target.value)
-        // }
+        onFocus={e => update(parseFrom(fmt)(e.target.value))}
+        onBlur={e =>
+          compose(
+            update,
+            formatAs(fmt),
+            parseFrom(fmt)
+          )(e.target.value)
+        }
       />
     </Label>
   </div>

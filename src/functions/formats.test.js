@@ -1,4 +1,4 @@
-import { formatAs, parseFrom } from "./formats"
+import { formatAs, parseFrom, NUMBER, DOLLAR, PERCENT } from "./formats"
 import React from "react"
 import renderer from "react-test-renderer"
 import { compose } from "ramda"
@@ -26,14 +26,11 @@ const testArr = fmt => arr =>
     .every(x => x)
 
 it("Number format should be (quasi-)isomorphic", () => {
-  expect(testArr("NUMBER")(arr)).toBe(true)
-})
-it("Number format should be (quasi-)isomorphic", () => {
-  expect(testArr("NUMBER")(arr)).toBe(true)
+  expect(testArr(NUMBER)(arr)).toBe(true)
 })
 it("Dollar format should be (quasi-)isomorphic", () => {
-  expect(testArr("DOLLAR")(arr3)).toBe(true)
+  expect(testArr(DOLLAR)(arr3)).toBe(true)
 })
 it("Percent format should be (quasi-)isomorphic", () => {
-  arr4.map(e => expect(isoPF("PERCENT")(e)).toBe(e))
+  arr4.map(e => expect(isoPF(PERCENT)(e)).toBe(e))
 })
