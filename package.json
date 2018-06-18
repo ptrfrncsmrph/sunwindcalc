@@ -3,11 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "fluture": "^8.0.2",
+    "fluture-sanctuary-types": "^2.2.0",
+    "folktale": "^2.1.0",
     "ramda": "^0.25.0",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-input-autosize": "^2.2.1",
     "react-scripts": "1.1.4",
+    "sanctuary": "^0.15.0",
+    "sanctuary-def": "^0.18.1",
     "styled-components": "^3.3.2"
   },
   "scripts": {
@@ -22,6 +27,7 @@
     "enzyme-adapter-react-16": "^1.1.1",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-prettier": "^2.6.0",
+    "node-fetch": "^2.1.2",
     "prettier": "^1.13.5",
     "react-test-renderer": "^16.4.1",
     "sinon": "^6.0.0"

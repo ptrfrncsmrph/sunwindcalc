@@ -25,9 +25,6 @@ const testArr = fmt => arr =>
     .map((x, i) => x === arr[i])
     .every(x => x)
 
-console.log(testArr("DOLLAR")(arr3))
-console.log(testArr("PERCENT")(arr4))
-
 it("Number format should be (quasi-)isomorphic", () => {
   expect(testArr("NUMBER")(arr)).toBe(true)
 })
