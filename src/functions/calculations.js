@@ -1,4 +1,4 @@
-import { curry, compose, multiply } from "ramda"
+import { curry, compose, flip, multiply, subtract } from "ramda"
 
 export const valueAt = curry(
   (time, change, initialValue) => (1 + change) ** time * initialValue
@@ -8,6 +8,11 @@ const range = x =>
   Array(x)
     .fill("")
     .map((_, i) => i)
+
+const trace = msg => x => {
+  console.log(msg, x)
+  return x
+}
 
 // TODO: Convert all values to Maybe's instead of using this:
 // nullCheck :: !Number -> Number (??)
@@ -93,12 +98,14 @@ export const incentiveCalculations = years => ({
         multiply(valueAt(year)(annualDegradation)(firstYearProduction)),
         valueAt(year)(annualChange)
       )(initialValue))(netMetering),
-    sMART: (({ initialValue, capYear }) =>
-      compose(
-        capAt(year)(capYear),
-        nullCheck,
-        multiply(valueAt(year)(annualDegradation)(firstYearProduction))
-      )(initialValue))(sMART),
+    sMART: (({ initialValue: netMeterValue }) =>
+      (({ initialValue, capYear }) =>
+        compose(
+          capAt(year)(capYear),
+          nullCheck,
+          multiply(valueAt(year)(annualDegradation)(firstYearProduction)),
+          flip(subtract)(netMeterValue)
+        )(initialValue))(sMART))(netMetering),
     sREC: (({ initialValue, annualChange }) =>
       compose(
         capAt(year)(10),

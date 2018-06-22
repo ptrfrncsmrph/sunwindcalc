@@ -85,59 +85,9 @@ const stateFormats = {
   }
 }
 
-// const initialState = {
-//   firstYearProduction: "9459",
-//   // This is how it is on Enphase site
-//   // (Default is 0.5%)
-//   // Annual Degradation Factor
-//   // Percentage to reduce estimate each year to account for aging of PV modules.
-//   annualDegradation: "0.5",
-//   systemCapacity: "7920",
-//   systemCost: "25500",
-//   depreciation: {
-//     isActive: true,
-//     taxRate: "35",
-//     bonusDepreciationRate: "40"
-//   },
-//   nantucketSolar: "0",
-//   sREC: {
-//     isActive: true,
-//     initialValue: "0.23",
-//     annualChange: "0"
-//   },
-//   sMART: {
-//     isActive: false,
-//     initialValue: "0.17",
-//     capYear: "10"
-//   },
-//   netMetering: {
-//     isActive: false,
-//     initialValue: "0.19",
-//     annualChange: "2"
-//   },
-//   maintenance: {
-//     isActive: false,
-//     initialValue: "300",
-//     annualChange: "2",
-//     interval: "4",
-//     start: "3"
-//   },
-//   insurance: {
-//     isActive: false,
-//     initialValue: "150",
-//     annualChange: "2"
-//   },
-//   loan: {
-//     isActive: false,
-//     principal: "26000",
-//     interest: "3.5",
-//     years: "10"
-//   }
-// }
-
 class Financing extends Component {
   state = {
-    firstYearProduction: "9459",
+    firstYearProduction: "69218",
     // This is how it is on Enphase site
     // (Default is 0.5%)
     // Annual Degradation Factor
