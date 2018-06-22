@@ -5,7 +5,11 @@
 
 * {
   box-sizing: inherit;
-  font-family: 'SF Mono', monospace;
+  font-family: 'Circular Std';
+}
+
+input[type=text] {
+  font-family: 'SF Mono';
 }
 
 body {

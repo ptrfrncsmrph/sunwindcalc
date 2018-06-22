@@ -18,8 +18,10 @@ const res = incentiveCalculations(25)({
   },
   systemCost: 25500,
   taxRate: 0.35,
-  bonusDepreciationRate: 0.4,
-  nantucketSolar: 0,
+  depreciation: {
+    bonusDepreciationRate: 0.4,
+    nantucketSolar: 0
+  },
   maintenance: {
     initialValue: 300,
     annualChange: 0.02,

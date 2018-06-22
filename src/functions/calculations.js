@@ -41,9 +41,11 @@ incentiveCalculations :: (years: Int) -> ({
     initialValue: Int (Dollars),
     annualChange: Float (+/- Unit Interval)
   },
+  depreciation: {
+    taxRate: Float (Unit Interval),
+    bonusDepreciationRate: Float (Unit Interval)
+  },
   systemCost: Int (Dollars),
-  taxRate: Float (Unit Interval),
-  bonusDepreciationRate: Float (Unit Interval),
   nantucketSolar: Int (Dollars),
   maintenance: {
     initialValue: Int (Dollars),
@@ -78,8 +80,7 @@ export const incentiveCalculations = years => ({
   sMART,
   netMetering,
   systemCost,
-  taxRate,
-  bonusDepreciationRate,
+  depreciation,
   nantucketSolar,
   maintenance,
   insurance,
@@ -105,17 +106,18 @@ export const incentiveCalculations = years => ({
         multiply(valueAt(year)(annualDegradation)(firstYearProduction)),
         valueAt(year)(annualChange)
       )(initialValue))(sREC),
-    depreciation: compose(
-      capAt(year)(6),
-      nullCheck,
-      multiply(taxRate),
-      x => (year === 0 ? x + bonusDepreciationRate * systemCost : x),
-      // The following table is from MACRS 5-year depreciation schedule
-      // https://www.irs.gov/pub/irs-pdf/p946.pdf (see Table A-1)
-      multiply([0.2, 0.32, 0.192, 0.1152, 0.1152, 0.0576][year]),
-      multiply(1 - bonusDepreciationRate),
-      multiply(0.85)
-    )(systemCost),
+    depreciation: (({ bonusDepreciationRate, taxRate }) =>
+      compose(
+        capAt(year)(6),
+        nullCheck,
+        multiply(taxRate),
+        x => (year === 0 ? x + bonusDepreciationRate * systemCost : x),
+        // The following table is from MACRS 5-year depreciation schedule
+        // https://www.irs.gov/pub/irs-pdf/p946.pdf (see Table A-1)
+        multiply([0.2, 0.32, 0.192, 0.1152, 0.1152, 0.0576][year]),
+        multiply(1 - bonusDepreciationRate),
+        multiply(0.85)
+      )(systemCost))(depreciation),
     massTaxCredit: compose(
       nullCheck,
       capAt(year)(1),

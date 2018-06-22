@@ -1,6 +1,10 @@
 import { unchecked } from "sanctuary"
 import { encaseP, tryP, of as future, mapRej } from "fluture"
 import { chain, compose } from "ramda"
+import fetch from "node-fetch"
+
+import fromParamsToURL from "./fromParamsToURL"
+import fromStateToParams from "./fromStateToParams"
 
 const isOk = ({ ok }) => !!ok
 
@@ -21,5 +25,7 @@ export default compose(
       unchecked.tagBy(isOk)
     )
   ),
-  encaseP(fetch)
+  encaseP(fetch),
+  fromParamsToURL,
+  fromStateToParams
 )

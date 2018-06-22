@@ -18,6 +18,7 @@ const Input = styled.input`
 `
 
 const Label = styled.label`
+  opacity: ${({ isActive }) => (isActive ? "1" : "0.2")};
   font-family: "Circular Std";
   max-width: 800px;
   display: grid;
@@ -26,9 +27,9 @@ const Label = styled.label`
   margin-bottom: 0.5rem;
 `
 
-export default ({ name, type, value, title, update, fmt }) => (
+export default ({ name, isActive = true, type, value, title, update, fmt }) => (
   <div>
-    <Label htmlFor={name}>
+    <Label isActive={isActive} htmlFor={name}>
       {title || name}
       <Input
         type={type || "text"}
