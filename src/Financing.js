@@ -1,13 +1,10 @@
-import React, { Children, Component } from "react"
+import React, { Component } from "react"
 import InputGroup from "./components/InputGroup"
 import Input from "./components/Input"
 import Heading from "./components/Heading"
 import Form from "./components/Form"
 import { formatAs, NUMBER, DOLLAR, PERCENT, CENT } from "./functions/formats"
 import Switch from "./components/Switch"
-import styled from "styled-components"
-
-import { evolve, mergeDeepLeft } from "ramda"
 
 const stateDisplay = {
   firstYearProduction: "First year production (in kWh)",

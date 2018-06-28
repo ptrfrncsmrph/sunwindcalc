@@ -22,12 +22,43 @@ import {
 
 import fetchData from "./api/fetchData"
 
+const MONTHS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec"
+]
+
 const trace = msg => x => {
   console.log(msg, x)
   return x
 }
 
 const latest = obj => obj[last(Object.keys(obj))]
+
+const Table = styled.table`
+  width: 100%;
+  & tr {
+    border: none;
+  }
+  & tr:nth-of-type(odd) {
+    background-color: whitesmoke;
+  }
+  & th {
+    text-align: left;
+  }
+  & td {
+    text-align: right;
+  }
+`
 
 const Grid = styled.main`
   position: absolute;
@@ -47,6 +78,8 @@ const Grid = styled.main`
   padding-top: 4rem;
   grid-gap: 1rem;
 `
+
+const Subcontainer = styled.section``
 
 const Data = styled.pre`
   font-family: "SF Mono";
@@ -91,16 +124,20 @@ const arrayDisplay = {
 
 export default class Sizing extends Component {
   state = {
-    arrays: {}
+    arrays: {},
+    usage: {}
   }
 
   componentDidMount() {
     this.addArray()
+    this.addUsage()
   }
 
   addArray = () => {
     const key = uuidv1()
-    const defaultLocalState = latest(JSON.parse(localStorage.getItem("state")))
+    const defaultLocalState =
+      JSON.parse(localStorage.getItem("arrayState")) || {}
+
     this.setState(({ arrays }) => {
       this.updateGlobal({
         ...arrays,
@@ -150,8 +187,43 @@ export default class Sizing extends Component {
       }
     })
     localStorage.setItem(
-      "state",
-      JSON.stringify(this.state[last(Object.keys(this.state))])
+      "arrayState",
+      JSON.stringify(this.state.arrays[last(Object.keys(this.state.arrays))])
+    )
+  }
+
+  addUsage = () => {
+    const key = uuidv1()
+    const defaultLocalUsageState =
+      JSON.parse(localStorage.getItem("usageState")) || {}
+
+    const defaultAppUsageState = MONTHS.reduce(
+      (acc, month) => ({ ...acc, [month]: "200" }),
+      {}
+    )
+    console.log(defaultLocalUsageState)
+    console.log(defaultAppUsageState)
+    this.setState(({ usage }) => {
+      this.updateGlobal({
+        ...usage,
+        [key]: mergeWithLatest(defaultLocalUsageState, defaultAppUsageState)
+      })
+      return {
+        usage: {
+          ...usage,
+          [key]: mergeWithLatest(defaultLocalUsageState, defaultAppUsageState)
+        }
+      }
+    })
+  }
+
+  updateUsage = key => values => {
+    this.setState(({ usage }) => ({
+      usage: { ...usage, [key]: { ...values } }
+    }))
+    localStorage.setItem(
+      "usageState",
+      JSON.stringify(this.state.usage[last(Object.keys(this.state.usage))])
     )
   }
 
@@ -172,7 +244,11 @@ export default class Sizing extends Component {
       formatAs(NUMBER)(
         Object.keys(arrays)
           .map(key => arrays[key])
-          .reduce((acc, { quantity, capacity }) => acc + quantity * capacity, 0)
+          .reduce(
+            (acc, { quantity = "0", capacity = "0" }) =>
+              acc + quantity * capacity,
+            0
+          )
       )
     )
     this.props.changeGlobal("systemCost")(
@@ -180,7 +256,7 @@ export default class Sizing extends Component {
         Object.keys(arrays)
           .map(key => arrays[key])
           .reduce(
-            (acc, { quantity, capacity, costPerWatt }) =>
+            (acc, { quantity = "0", capacity = "0", costPerWatt = "0" }) =>
               acc + quantity * capacity * parseNumFrom(CENT)(costPerWatt),
             0
           )
@@ -226,72 +302,139 @@ export default class Sizing extends Component {
   }
 
   render() {
-    const { arrays } = this.state
+    const { arrays, usage } = this.state
     return (
       <Grid cols={3}>
-        <Form
-          onSubmit={e => {
-            e.preventDefault()
-            this.handleSubmit()
-          }}
-        >
-          {Object.keys(arrays).map((arr, i) => (
-            <Fragment key={arr}>
-              <Heading>
-                <h4>Array {i + 1}</h4>
-              </Heading>
-              <InputGroup
-                values={arrays[arr]}
-                onValues={this.updateArray(arr)}
-                key={arr}
-              >
-                {Object.keys(arrays[arr])
-                  .filter(key => key !== "data" && key !== "error")
-                  .map(key => (
-                    <Input
-                      key={key}
-                      name={key}
-                      title={arrayDisplay[key]}
-                      value={arrays[arr][key]}
-                      fmt={arrayFormats[key]}
-                    />
-                  ))}
-              </InputGroup>
-
-              {arrays[arr].data && (
-                <Data>{JSON.stringify(arrays[arr].data, null, 2)}</Data>
-              )}
-              {arrays[arr].error && (
-                <Err>{JSON.stringify(arrays[arr].error, null, 2)}</Err>
-              )}
+        <Container>
+          <Subcontainer>
+            <Form
+              onSubmit={e => {
+                e.preventDefault()
+                this.handleSubmit()
+              }}
+            >
+              {Object.keys(arrays).map((arr, i) => (
+                <Fragment key={arr}>
+                  <Heading>
+                    <h4>Array {i + 1}</h4>
+                  </Heading>
+                  <InputGroup
+                    values={arrays[arr]}
+                    onValues={this.updateArray(arr)}
+                    key={arr}
+                  >
+                    {Object.keys(arrays[arr])
+                      .filter(key => key !== "data" && key !== "error")
+                      .map(key => (
+                        <Input
+                          key={key}
+                          name={key}
+                          title={arrayDisplay[key]}
+                          value={arrays[arr][key]}
+                          fmt={arrayFormats[key]}
+                        />
+                      ))}
+                  </InputGroup>
+                  {arrays[arr].error && (
+                    <Err>{JSON.stringify(arrays[arr].error, null, 2)}</Err>
+                  )}
+                  <Button
+                    type="button"
+                    onClick={e => {
+                      e.preventDefault()
+                      this.deleteArray(arr)
+                    }}
+                    value="Delete This Array"
+                  />
+                </Fragment>
+              ))}
               <Button
                 type="button"
                 onClick={e => {
                   e.preventDefault()
-                  this.deleteArray(arr)
+                  this.addArray(e)
                 }}
-                value="Delete This Array"
+                value="Add New Array"
               />
-            </Fragment>
-          ))}
-          <Button
-            type="button"
-            onClick={e => {
-              e.preventDefault()
-              this.addArray(e)
-            }}
-            value="Add New Array"
-          />
-          <Button
-            type="submit"
-            onClick={e => {
-              e.preventDefault()
-              this.handleSubmit()
-            }}
-          />
-        </Form>
+              <Button
+                type="submit"
+                onClick={e => {
+                  e.preventDefault()
+                  this.handleSubmit()
+                }}
+              />
+            </Form>
+          </Subcontainer>
+        </Container>
         <Container>
-          <Data>{JSON.stringify(this.props, null, 2)}</Data>
+          <Subcontainer>
+            <Heading>
+              <h4>Usage data</h4>
+            </Heading>
+            <Form cols={2}>
+              {Object.keys(usage).map(acct => (
+                <InputGroup
+                  values={usage[acct]}
+                  onValues={this.updateUsage(acct)}
+                  key={acct}
+                >
+                  {Object.keys(usage[acct])
+                    .filter(key => key !== "data" && key !== "error")
+                    .map(key => (
+                      <Input
+                        key={key}
+                        name={key}
+                        title={key}
+                        value={usage[acct][key]}
+                        fmt={NUMBER}
+                      />
+                    ))}
+                </InputGroup>
+              ))}
+            </Form>
+          </Subcontainer>
+        </Container>
+        <Container>
+          <Subcontainer>
+            <Heading>
+              <h4>System overview</h4>
+            </Heading>
+            <Table>
+              <tbody>
+                {Object.keys(this.props.global)
+                  .filter(key => key !== "annualDegradation")
+                  .map(key => (
+                    <tr key={key}>
+                      <th scope="row">{key}</th>
+                      <td>{this.props.global[key]}</td>
+                    </tr>
+                  ))}
+              </tbody>
+            </Table>
+            <Heading>
+              <h4>Usage offset</h4>
+            </Heading>
+            <Table>
+              <tbody>
+                <tr>
+                  <th scope="row">Total usage</th>
+                  <td>
+                    {formatAs(NUMBER)(
+                      Object.values(usage).reduce(
+                        (acc, acct) =>
+                          acc +
+                          Object.values(acct).reduce(
+                            (acc, x) => acc + parseNumFrom(NUMBER)(x),
+                            0
+                          ),
+                        0
+                      )
+                    )}
+                  </td>
+                </tr>
+              </tbody>
+            </Table>
+          </Subcontainer>
         </Container>
       </Grid>
     )

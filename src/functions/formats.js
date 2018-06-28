@@ -24,7 +24,7 @@ export const formatAs = fmt => x => {
     case PERCENT:
       return `${(+x).toLocaleString("en-US")}%`
     case NUMBER:
-      return `${(+x).toLocaleString("en-US")}`
+      return `${Math.round(+x).toLocaleString("en-US")}`
     case PITCH:
       return x
     default:

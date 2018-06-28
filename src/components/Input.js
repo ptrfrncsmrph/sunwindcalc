@@ -14,15 +14,16 @@ const Input = styled.input`
   text-align: right;
   &:focus {
     background-color: #f39c1233;
+    border: none;
   }
 `
 
 const Label = styled.label`
   opacity: ${({ isActive }) => (isActive ? "1" : "0.2")};
   font-family: "Circular Std";
-  max-width: 800px;
   display: grid;
-  grid-template-columns: 1fr 8rem;
+  align-items: end;
+  grid-template-columns: 1fr 5rem;
   border-bottom: 1px dotted black;
   margin-bottom: 0.5rem;
 `

@@ -13,6 +13,7 @@ const Nav = styled.nav`
   width: 100vw;
   background-color: #ecf0f1ff;
   box-shadow: 0 2px 10px #ecf0f166;
+  z-index: 10;
 `
 
 const UL = styled.ul`
