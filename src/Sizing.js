@@ -7,6 +7,8 @@ import mergeWithLatest from "./functions/mergeWithLatest"
 import Button from "./components/Button"
 import Form from "./components/Form"
 import Container from "./components/Container"
+import Subcontainer from "./components/Subcontainer"
+import Grid from "./components/Grid"
 import Heading from "./components/Heading"
 import Input from "./components/Input"
 import InputGroup from "./components/InputGroup"
@@ -59,27 +61,6 @@ const Table = styled.table`
     text-align: right;
   }
 `
-
-const Grid = styled.main`
-  position: absolute;
-  top: 0;
-  display: grid;
-  height: 100vh;
-  width: 100%;
-  grid-template-columns: ${({ cols }) => `repeat(${cols}, 1fr)`};
-  & > * {
-    overflow: scroll;
-    width: 100%;
-    height: auto;
-    max-height: 100%;
-  }
-  padding-left: 5rem;
-  padding-right: 5rem;
-  padding-top: 4rem;
-  grid-gap: 1rem;
-`
-
-const Subcontainer = styled.section``
 
 const Data = styled.pre`
   font-family: "SF Mono";
@@ -303,6 +284,16 @@ export default class Sizing extends Component {
 
   render() {
     const { arrays, usage } = this.state
+    const totalUsage = Object.values(usage).reduce(
+      (acc, acct) =>
+        acc +
+        Object.values(acct).reduce(
+          (acc, x) => acc + parseNumFrom(NUMBER)(x),
+          0
+        ),
+      0
+    )
+
     return (
       <Grid cols={3}>
         <Container>
@@ -418,17 +409,17 @@ export default class Sizing extends Component {
               <tbody>
                 <tr>
                   <th scope="row">Total usage</th>
+                  <td>{formatAs(NUMBER)(totalUsage)}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Percent offset</th>
                   <td>
-                    {formatAs(NUMBER)(
-                      Object.values(usage).reduce(
-                        (acc, acct) =>
-                          acc +
-                          Object.values(acct).reduce(
-                            (acc, x) => acc + parseNumFrom(NUMBER)(x),
-                            0
-                          ),
-                        0
-                      )
+                    {formatAs(PERCENT)(
+                      (parseNumFrom(NUMBER)(
+                        this.props.global.firstYearProduction
+                      ) /
+                        totalUsage) *
+                        100
                     )}
                   </td>
                 </tr>

@@ -6,6 +6,11 @@ export default ({ children, values, onValues }) =>
       ...child.props,
       isActive: values.isActive,
       value: values[child.props.name],
+      updateChecked: value =>
+        onValues({
+          ...values,
+          [child.props.name]: !value
+        }),
       update: value =>
         onValues({
           ...values,

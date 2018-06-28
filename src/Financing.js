@@ -2,9 +2,14 @@ import React, { Component } from "react"
 import InputGroup from "./components/InputGroup"
 import Input from "./components/Input"
 import Heading from "./components/Heading"
-import Form from "./components/Form"
-import { formatAs, NUMBER, DOLLAR, PERCENT, CENT } from "./functions/formats"
+import Container from "./components/Container"
+import Subcontainer from "./components/Subcontainer"
+import Grid from "./components/Grid"
+import SMARTBaseRateCalc from "./components/SMARTBaseRateCalc"
 import Switch from "./components/Switch"
+import Form from "./components/Form"
+
+import { formatAs, NUMBER, DOLLAR, PERCENT, CENT } from "./functions/formats"
 
 const stateDisplay = {
   firstYearProduction: "First year production (in kWh)",
@@ -156,12 +161,18 @@ class Financing extends Component {
     }))
   }
 
+  handleSubmit = e => {
+    e.preventDefault()
+    console.log("Submitted")
+  }
+
   updateValues = values => {
     this.setState(prevState => ({
       ...prevState,
       ...values
     }))
   }
+
   updateNestedValues = nest => values => {
     this.setState(prevState => ({
       [nest]: {
@@ -187,220 +198,245 @@ class Financing extends Component {
       loan
     } = this.state
     return (
-      <Form onSubmit={this.handleSubmit}>
-        <Heading>
-          <h4>System Info</h4>
-        </Heading>
-        <InputGroup
-          values={{
-            firstYearProduction,
-            annualDegradation,
-            systemCapacity,
-            systemCost,
-            nantucketSolar
-          }}
-          onValues={this.updateValues}
-        >
-          {Object.keys(this.state)
-            .filter(key => typeof this.state[key] !== "object")
-            .map(key => (
-              <Input
-                key={key}
-                name={key}
-                title={stateDisplay[key]}
-                value={this.state[key]}
-                fmt={stateFormats[key]}
-              />
-            ))}
-        </InputGroup>
-        <Heading>
-          <h4>Depreciation</h4>
-          <Switch
-            height="2rem"
-            on={depreciation.isActive}
-            onClick={() =>
-              this.setState(({ depreciation: { isActive } }) => ({
-                depreciation: { ...depreciation, isActive: !isActive }
-              }))
-            }
-          />
-        </Heading>
-        <InputGroup
-          values={depreciation}
-          onValues={this.updateNestedValues("depreciation")}
-        >
-          {Object.keys(this.state.depreciation)
-            .filter(key => typeof this.state.depreciation[key] === "string")
-            .map(key => (
-              <Input
-                key={key}
-                name={key}
-                title={stateDisplay.depreciation[key]}
-                value={this.state.depreciation[key]}
-                fmt={stateFormats.depreciation[key]}
-              />
-            ))}
-        </InputGroup>
-        <Heading>
-          <h4>SREC</h4>
-          <Switch
-            height="2rem"
-            on={sREC.isActive}
-            onClick={() =>
-              this.setState(({ sREC: { isActive } }) => ({
-                sREC: { ...sREC, isActive: !isActive }
-              }))
-            }
-          />
-        </Heading>
-        <InputGroup values={sREC} onValues={this.updateNestedValues("sREC")}>
-          {Object.keys(this.state.sREC)
-            .filter(key => typeof this.state.sREC[key] === "string")
-            .map(key => (
-              <Input
-                key={key}
-                name={key}
-                title={stateDisplay.sREC[key]}
-                value={this.state.sREC[key]}
-                fmt={stateFormats.sREC[key]}
-              />
-            ))}
-        </InputGroup>
-        <Heading>
-          <h4>SMART</h4>
-          <Switch
-            height="2rem"
-            on={sMART.isActive}
-            onClick={() =>
-              this.setState(({ sMART: { isActive } }) => ({
-                sMART: { ...sMART, isActive: !isActive }
-              }))
-            }
-          />
-        </Heading>
-        <InputGroup values={sMART} onValues={this.updateNestedValues("sMART")}>
-          {Object.keys(this.state.sMART)
-            .filter(x => typeof this.state.sMART[x] === "string")
-            .map(key => (
-              <Input
-                key={key}
-                name={key}
-                title={stateDisplay.sMART[key]}
-                value={String(this.state.sMART[key])}
-                fmt={stateFormats.sMART[key]}
-              />
-            ))}
-        </InputGroup>
-        <Heading>
-          <h4>Net Metering</h4>
-          <Switch
-            height="2rem"
-            on={netMetering.isActive}
-            onClick={() =>
-              this.setState(({ netMetering: { isActive } }) => ({
-                netMetering: { ...netMetering, isActive: !isActive }
-              }))
-            }
-          />
-        </Heading>
-        <InputGroup
-          values={netMetering}
-          onValues={this.updateNestedValues("netMetering")}
-        >
-          {Object.keys(this.state.netMetering)
-            .filter(x => typeof this.state.netMetering[x] === "string")
-            .map(key => (
-              <Input
-                key={key}
-                name={key}
-                title={stateDisplay.netMetering[key]}
-                value={String(this.state.netMetering[key])}
-                fmt={stateFormats.netMetering[key]}
-              />
-            ))}
-        </InputGroup>
-        <Heading>
-          <h4>Maintenance</h4>
-          <Switch
-            height="2rem"
-            on={maintenance.isActive}
-            onClick={() =>
-              this.setState(({ maintenance: { isActive } }) => ({
-                maintenance: { ...maintenance, isActive: !isActive }
-              }))
-            }
-          />
-        </Heading>
-        <InputGroup
-          values={maintenance}
-          onValues={this.updateNestedValues("maintenance")}
-        >
-          {Object.keys(this.state.maintenance)
-            .filter(x => typeof this.state.maintenance[x] === "string")
-            .map(key => (
-              <Input
-                key={key}
-                name={key}
-                title={stateDisplay.maintenance[key]}
-                value={String(this.state.maintenance[key])}
-                fmt={stateFormats.maintenance[key]}
-              />
-            ))}
-        </InputGroup>
-        <Heading>
-          <h4>Insurance</h4>
-          <Switch
-            height="2rem"
-            on={insurance.isActive}
-            onClick={() =>
-              this.setState(({ insurance: { isActive } }) => ({
-                insurance: { ...insurance, isActive: !isActive }
-              }))
-            }
-          />
-        </Heading>
-        <InputGroup
-          values={insurance}
-          onValues={this.updateNestedValues("insurance")}
-        >
-          {Object.keys(this.state.insurance)
-            .filter(x => typeof this.state.insurance[x] === "string")
-            .map(key => (
-              <Input
-                key={key}
-                name={key}
-                title={stateDisplay.insurance[key]}
-                value={String(this.state.insurance[key])}
-                fmt={stateFormats.insurance[key]}
-              />
-            ))}
-        </InputGroup>
-        <Heading>
-          <h4>Loan</h4>
-          <Switch
-            height="2rem"
-            on={loan.isActive}
-            onClick={() =>
-              this.setState(({ loan: { isActive } }) => ({
-                loan: { ...loan, isActive: !isActive }
-              }))
-            }
-          />
-        </Heading>
-        <InputGroup values={loan} onValues={this.updateNestedValues("loan")}>
-          {Object.keys(this.state.loan)
-            .filter(x => typeof this.state.loan[x] === "string")
-            .map(key => (
-              <Input
-                key={key}
-                name={key}
-                title={stateDisplay.loan[key]}
-                value={String(this.state.loan[key])}
-                fmt={stateFormats.loan[key]}
-              />
-            ))}
-        </InputGroup>
-      </Form>
+      <Grid cols={3}>
+        <Container>
+          <Subcontainer>
+            <Heading>
+              <h4>SMART Base Rate</h4>
+            </Heading>
+            <SMARTBaseRateCalc systemCapacity={this.state.systemCapacity} />
+          </Subcontainer>
+        </Container>
+        <Container>
+          <Subcontainer>
+            <Form onSubmit={this.handleSubmit}>
+              <Heading>
+                <h4>System Info</h4>
+              </Heading>
+              <InputGroup
+                values={{
+                  firstYearProduction,
+                  annualDegradation,
+                  systemCapacity,
+                  systemCost,
+                  nantucketSolar
+                }}
+                onValues={this.updateValues}
+              >
+                {Object.keys(this.state)
+                  .filter(key => typeof this.state[key] !== "object")
+                  .map(key => (
+                    <Input
+                      key={key}
+                      name={key}
+                      title={stateDisplay[key]}
+                      value={this.state[key]}
+                      fmt={stateFormats[key]}
+                    />
+                  ))}
+              </InputGroup>
+              <Heading>
+                <h4>Depreciation</h4>
+                <Switch
+                  height="2rem"
+                  on={depreciation.isActive}
+                  onClick={() =>
+                    this.setState(({ depreciation: { isActive } }) => ({
+                      depreciation: { ...depreciation, isActive: !isActive }
+                    }))
+                  }
+                />
+              </Heading>
+              <InputGroup
+                values={depreciation}
+                onValues={this.updateNestedValues("depreciation")}
+              >
+                {Object.keys(this.state.depreciation)
+                  .filter(
+                    key => typeof this.state.depreciation[key] === "string"
+                  )
+                  .map(key => (
+                    <Input
+                      key={key}
+                      name={key}
+                      title={stateDisplay.depreciation[key]}
+                      value={this.state.depreciation[key]}
+                      fmt={stateFormats.depreciation[key]}
+                    />
+                  ))}
+              </InputGroup>
+              <Heading>
+                <h4>SREC</h4>
+                <Switch
+                  height="2rem"
+                  on={sREC.isActive}
+                  onClick={() =>
+                    this.setState(({ sREC: { isActive } }) => ({
+                      sREC: { ...sREC, isActive: !isActive }
+                    }))
+                  }
+                />
+              </Heading>
+              <InputGroup
+                values={sREC}
+                onValues={this.updateNestedValues("sREC")}
+              >
+                {Object.keys(this.state.sREC)
+                  .filter(key => typeof this.state.sREC[key] === "string")
+                  .map(key => (
+                    <Input
+                      key={key}
+                      name={key}
+                      title={stateDisplay.sREC[key]}
+                      value={this.state.sREC[key]}
+                      fmt={stateFormats.sREC[key]}
+                    />
+                  ))}
+              </InputGroup>
+              <Heading>
+                <h4>SMART</h4>
+                <Switch
+                  height="2rem"
+                  on={sMART.isActive}
+                  onClick={() =>
+                    this.setState(({ sMART: { isActive } }) => ({
+                      sMART: { ...sMART, isActive: !isActive }
+                    }))
+                  }
+                />
+              </Heading>
+              <InputGroup
+                values={sMART}
+                onValues={this.updateNestedValues("sMART")}
+              >
+                {Object.keys(this.state.sMART)
+                  .filter(x => typeof this.state.sMART[x] === "string")
+                  .map(key => (
+                    <Input
+                      key={key}
+                      name={key}
+                      title={stateDisplay.sMART[key]}
+                      value={String(this.state.sMART[key])}
+                      fmt={stateFormats.sMART[key]}
+                    />
+                  ))}
+              </InputGroup>
+              <Heading>
+                <h4>Net Metering</h4>
+                <Switch
+                  height="2rem"
+                  on={netMetering.isActive}
+                  onClick={() =>
+                    this.setState(({ netMetering: { isActive } }) => ({
+                      netMetering: { ...netMetering, isActive: !isActive }
+                    }))
+                  }
+                />
+              </Heading>
+              <InputGroup
+                values={netMetering}
+                onValues={this.updateNestedValues("netMetering")}
+              >
+                {Object.keys(this.state.netMetering)
+                  .filter(x => typeof this.state.netMetering[x] === "string")
+                  .map(key => (
+                    <Input
+                      key={key}
+                      name={key}
+                      title={stateDisplay.netMetering[key]}
+                      value={String(this.state.netMetering[key])}
+                      fmt={stateFormats.netMetering[key]}
+                    />
+                  ))}
+              </InputGroup>
+              <Heading>
+                <h4>Maintenance</h4>
+                <Switch
+                  height="2rem"
+                  on={maintenance.isActive}
+                  onClick={() =>
+                    this.setState(({ maintenance: { isActive } }) => ({
+                      maintenance: { ...maintenance, isActive: !isActive }
+                    }))
+                  }
+                />
+              </Heading>
+              <InputGroup
+                values={maintenance}
+                onValues={this.updateNestedValues("maintenance")}
+              >
+                {Object.keys(this.state.maintenance)
+                  .filter(x => typeof this.state.maintenance[x] === "string")
+                  .map(key => (
+                    <Input
+                      key={key}
+                      name={key}
+                      title={stateDisplay.maintenance[key]}
+                      value={String(this.state.maintenance[key])}
+                      fmt={stateFormats.maintenance[key]}
+                    />
+                  ))}
+              </InputGroup>
+              <Heading>
+                <h4>Insurance</h4>
+                <Switch
+                  height="2rem"
+                  on={insurance.isActive}
+                  onClick={() =>
+                    this.setState(({ insurance: { isActive } }) => ({
+                      insurance: { ...insurance, isActive: !isActive }
+                    }))
+                  }
+                />
+              </Heading>
+              <InputGroup
+                values={insurance}
+                onValues={this.updateNestedValues("insurance")}
+              >
+                {Object.keys(this.state.insurance)
+                  .filter(x => typeof this.state.insurance[x] === "string")
+                  .map(key => (
+                    <Input
+                      key={key}
+                      name={key}
+                      title={stateDisplay.insurance[key]}
+                      value={String(this.state.insurance[key])}
+                      fmt={stateFormats.insurance[key]}
+                    />
+                  ))}
+              </InputGroup>
+              <Heading>
+                <h4>Loan</h4>
+                <Switch
+                  height="2rem"
+                  on={loan.isActive}
+                  onClick={() =>
+                    this.setState(({ loan: { isActive } }) => ({
+                      loan: { ...loan, isActive: !isActive }
+                    }))
+                  }
+                />
+              </Heading>
+              <InputGroup
+                values={loan}
+                onValues={this.updateNestedValues("loan")}
+              >
+                {Object.keys(this.state.loan)
+                  .filter(x => typeof this.state.loan[x] === "string")
+                  .map(key => (
+                    <Input
+                      key={key}
+                      name={key}
+                      title={stateDisplay.loan[key]}
+                      value={String(this.state.loan[key])}
+                      fmt={stateFormats.loan[key]}
+                    />
+                  ))}
+              </InputGroup>
+            </Form>
+          </Subcontainer>
+        </Container>
+      </Grid>
     )
   }
 }
