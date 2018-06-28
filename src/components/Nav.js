@@ -8,7 +8,7 @@ const StyledLink = styled(Link)`
 
 const Nav = styled.nav`
   position: fixed;
-  padding: 2rem 10rem 2rem 10rem;
+  padding: 0.5rem;
   top: 0;
   width: 100vw;
   background-color: #ecf0f1ff;

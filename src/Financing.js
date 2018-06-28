@@ -7,6 +7,8 @@ import { formatAs, NUMBER, DOLLAR, PERCENT, CENT } from "./functions/formats"
 import Switch from "./components/Switch"
 import styled from "styled-components"
 
+import { evolve, mergeDeepLeft } from "ramda"
+
 const stateDisplay = {
   firstYearProduction: "First year production (in kWh)",
   annualDegradation: "Annual degradation factor (default is 0.5%)",
@@ -88,10 +90,6 @@ const stateFormats = {
 class Financing extends Component {
   state = {
     firstYearProduction: "69218",
-    // This is how it is on Enphase site
-    // (Default is 0.5%)
-    // Annual Degradation Factor
-    // Percentage to reduce estimate each year to account for aging of PV modules.
     annualDegradation: "0.5",
     systemCapacity: "7920",
     systemCost: "25500",
@@ -137,8 +135,8 @@ class Financing extends Component {
   }
 
   componentDidMount() {
-    this.setState(initialState =>
-      Object.keys(initialState).reduce(
+    this.setState(initialState => ({
+      ...Object.keys(initialState).reduce(
         (acc, e) => ({
           ...acc,
           [e]:
@@ -156,8 +154,9 @@ class Financing extends Component {
                 )
         }),
         {}
-      )
-    )
+      ),
+      ...this.props.global
+    }))
   }
 
   updateValues = values => {

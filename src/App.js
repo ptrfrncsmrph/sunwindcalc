@@ -8,15 +8,28 @@ import Dummy from "./containers/Dummy"
 
 export default class App extends Component {
   state = {
-    systemSize: 0,
-    systemCost: 0
+    firstYearProduction: "692099",
+    annualDegradation: "0.5",
+    systemCapacity: "7920",
+    systemCost: "25500"
+  }
+  handleChange = key => value => {
+    this.setState(() => ({ [key]: value }))
   }
   render() {
     return (
       <Fragment>
         <Nav />
-        <Route path="/sizing" component={Sizing} />
-        <Route path="/financing" component={Financing} />
+        <Route
+          path="/sizing"
+          render={() => (
+            <Sizing changeGlobal={this.handleChange} global={this.state} />
+          )}
+        />
+        <Route
+          path="/financing"
+          render={() => <Financing global={this.state} />}
+        />
         <Route path="/dummy" component={Dummy} />
       </Fragment>
     )

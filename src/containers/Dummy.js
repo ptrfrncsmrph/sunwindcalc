@@ -1,7 +1,7 @@
 import React from "react"
 import { head } from "ramda"
 import styled from "styled-components"
-import { res } from "../functions/calculations.playground.js"
+import { res2 as res } from "../functions/calculations.playground.js"
 
 const Table = styled.table`
   & td,

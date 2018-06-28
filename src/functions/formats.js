@@ -10,14 +10,12 @@ export const PITCH = "PITCH"
 export const formatAs = fmt => x => {
   switch (fmt) {
     case DOLLAR:
-      return `${
-        (+x)
-          .toLocaleString("en-US", {
-            style: "currency",
-            currency: "USD"
-          })
-          .split(".")[0]
-      }`
+      return `${(+x)
+        .toLocaleString("en-US", {
+          style: "currency",
+          currency: "USD"
+        })
+        .slice(0, -3)}`
     case CENT:
       return `${(+x).toLocaleString("en-US", {
         style: "currency",
@@ -37,6 +35,10 @@ export const formatAs = fmt => x => {
 const removeNonDigit = str =>
   str.replace(/[^0-9|\.|\-]/g, "").replace(/^0*(\d+.*)/, "$1")
 
+const radiansToDegrees = radians => (radians * 180) / Math.PI
+
+const toFixed = n => x => x.toFixed(n)
+
 // parse :: Format -> String -> String
 export const parseFrom = fmt => str => {
   switch (fmt) {
@@ -51,9 +53,9 @@ export const parseFrom = fmt => str => {
     case PITCH:
       return /[:/]/.test(str)
         ? `${compose(
-            roundToTenth,
-            toDegrees,
-            x => Math.atan(x[0] / x[1]),
+            toFixed(1),
+            radiansToDegrees,
+            ([rise, run]) => Math.atan(rise / run),
             map(parseInt),
             map(removeNonDigit),
             split(/[:/]/)
@@ -63,9 +65,6 @@ export const parseFrom = fmt => str => {
       return ""
   }
 }
-
-const toDegrees = radians => (radians * 180) / Math.PI
-const roundToTenth = x => Math.round(x * 10) / 10
 
 // parseNumFrom :: Format -> String -> Number
 export const parseNumFrom = fmt => str => {
@@ -81,9 +80,9 @@ export const parseNumFrom = fmt => str => {
     case PITCH:
       return /[:/]/.test(str)
         ? compose(
-            roundToTenth,
-            toDegrees,
-            x => Math.atan(x[0] / x[1]),
+            toFixed(1),
+            radiansToDegrees,
+            ([rise, run]) => Math.atan(rise / run),
             map(parseInt),
             map(removeNonDigit),
             split(/[:/]/)
