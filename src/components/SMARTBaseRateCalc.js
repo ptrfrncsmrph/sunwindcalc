@@ -1,13 +1,29 @@
 import React, { Component, Fragment } from "react"
+import styled from "styled-components"
 import sMARTBaseRate from "../functions/sMARTBaseRate"
+import { map } from "ramda"
 
-import { NUMBER } from "../functions/formats"
+import { parseNumFrom, NUMBER } from "../functions/formats"
 import Heading from "./Heading"
 import Form from "./Form"
 import Input from "./Input"
 import InputGroup from "./InputGroup"
 import Switch from "./Switch"
 import Checkbox from "./Checkbox"
+
+const camelToSentence = str =>
+  str
+    .replace(/[A-Z]/g, match => ` ${match.toLowerCase()}`)
+    .replace(/^./, match => match.toUpperCase())
+
+const Data = styled.pre`
+  font-family: "SF Mono";
+  white-space: normal;
+  padding: 0.5rem;
+  background-color: whitesmoke;
+  border-radius: 6px;
+  overflow: hidden;
+`
 
 const stateDisplay = {
   block: "Block",
@@ -122,6 +138,23 @@ export default class SMARTBaseRateCalc extends Component {
       adders
     } = this.state
     const { systemCapacity = "0" } = this.props
+    const parsedParams = map(parseNumFrom(NUMBER))({
+      block,
+      tranche,
+      systemCapacity
+    })
+    const finalParams = {
+      systemCapacity,
+      ...parsedParams,
+      adders: {
+        ...adders,
+        storage: {
+          ...adders.storage,
+          capacity: parseNumFrom(NUMBER)(adders.storage.capacity),
+          usefulEnergy: parseNumFrom(NUMBER)(adders.storage.usefulEnergy)
+        }
+      }
+    }
     return (
       <Fragment>
         <InputGroup
@@ -171,6 +204,55 @@ export default class SMARTBaseRateCalc extends Component {
               />
             ))}
         </InputGroup>
+        <Heading>
+          <h4>Location adder</h4>
+        </Heading>
+        {Object.keys(this.state.adders.location).map(key => (
+          <Checkbox
+            checked={adders.location[key].isActive}
+            handleChange={() =>
+              this.setState(({ adders: { location } }) => ({
+                adders: {
+                  ...adders,
+                  location: {
+                    ...location,
+                    [key]: {
+                      ...location[key],
+                      isActive: !location[key].isActive
+                    }
+                  }
+                }
+              }))
+            }
+            key={key}
+            label={camelToSentence(key)}
+          />
+        ))}
+        <Heading>
+          <h4>Off-taker adder</h4>
+        </Heading>
+        {Object.keys(this.state.adders.offTaker).map(key => (
+          <Checkbox
+            checked={adders.offTaker[key].isActive}
+            handleChange={() =>
+              this.setState(({ adders: { offTaker } }) => ({
+                adders: {
+                  ...adders,
+                  offTaker: {
+                    ...offTaker,
+                    [key]: {
+                      ...offTaker[key],
+                      isActive: !offTaker[key].isActive
+                    }
+                  }
+                }
+              }))
+            }
+            key={key}
+            label={camelToSentence(key)}
+          />
+        ))}
+        <Data>{JSON.stringify(sMARTBaseRate(finalParams))}</Data>
       </Fragment>
     )
   }

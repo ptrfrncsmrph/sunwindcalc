@@ -31,8 +31,15 @@ const CheckboxSVG = ({ checked }) => (
   </SVG>
 )
 
-export default ({ checked, disabled = false, id, handleChange }) => (
+export default ({
+  checked,
+  disabled = false,
+  id,
+  handleChange,
+  label = ""
+}) => (
   <Container disabled={disabled} onClick={!disabled && handleChange}>
     <CheckboxSVG checked={checked} />
+    {label && <span>{label}</span>}
   </Container>
 )
