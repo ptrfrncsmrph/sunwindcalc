@@ -3,13 +3,12 @@ import styled from "styled-components"
 import sMARTBaseRate from "../functions/sMARTBaseRate"
 import { map } from "ramda"
 
-import { parseNumFrom, NUMBER } from "../functions/formats"
+import { formatAs, parseNumFrom, CENT, NUMBER } from "../functions/formats"
 import Heading from "./Heading"
-import Form from "./Form"
 import Input from "./Input"
 import InputGroup from "./InputGroup"
-import Switch from "./Switch"
 import Checkbox from "./Checkbox"
+import Button from "./Button"
 
 const camelToSentence = str =>
   str
@@ -38,6 +37,21 @@ const stateDisplay = {
     }
   }
 }
+
+const getParsedParams = ({ block, tranche, adders }) => ({
+  ...map(parseNumFrom(NUMBER))({
+    block,
+    tranche
+  }),
+  adders: {
+    ...adders,
+    storage: {
+      ...adders.storage,
+      capacity: parseNumFrom(NUMBER)(adders.storage.capacity),
+      usefulEnergy: parseNumFrom(NUMBER)(adders.storage.usefulEnergy)
+    }
+  }
+})
 
 export default class SMARTBaseRateCalc extends Component {
   state = {
@@ -104,6 +118,22 @@ export default class SMARTBaseRateCalc extends Component {
     }
   }
 
+  // There's a lot of hacky shit goin on here,
+  // this is one of the worst offenders. Apologies
+  // Future Pete. Sincerely, Past Pete
+  handleCalculate = params => {
+    this.props.onValues(
+      Object.keys(params)
+        .map(key => ({
+          [key]:
+            key === "initialValue"
+              ? formatAs(CENT)(params[key])
+              : formatAs(NUMBER)(params[key])
+        }))
+        .reduce((acc, x) => ({ ...acc, ...x }), {})
+    )
+  }
+
   updateValues = values => {
     this.setState(prevState => ({
       ...prevState,
@@ -143,6 +173,7 @@ export default class SMARTBaseRateCalc extends Component {
       tranche,
       systemCapacity
     })
+
     const finalParams = {
       systemCapacity,
       ...parsedParams,
@@ -155,6 +186,9 @@ export default class SMARTBaseRateCalc extends Component {
         }
       }
     }
+
+    const { onValues } = this.props
+
     return (
       <Fragment>
         <InputGroup
@@ -252,7 +286,11 @@ export default class SMARTBaseRateCalc extends Component {
             label={camelToSentence(key)}
           />
         ))}
-        <Data>{JSON.stringify(sMARTBaseRate(finalParams))}</Data>
+        <Button
+          type="button"
+          onClick={() => this.handleCalculate(sMARTBaseRate(finalParams))}
+          value="Calculate"
+        />
       </Fragment>
     )
   }

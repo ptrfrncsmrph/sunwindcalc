@@ -9,6 +9,7 @@ import SMARTBaseRateCalc from "./components/SMARTBaseRateCalc"
 import Switch from "./components/Switch"
 import Form from "./components/Form"
 
+import { compose } from "ramda"
 import { formatAs, NUMBER, DOLLAR, PERCENT, CENT } from "./functions/formats"
 
 const stateDisplay = {
@@ -204,7 +205,10 @@ class Financing extends Component {
             <Heading>
               <h4>SMART Base Rate</h4>
             </Heading>
-            <SMARTBaseRateCalc systemCapacity={this.state.systemCapacity} />
+            <SMARTBaseRateCalc
+              systemCapacity={this.state.systemCapacity}
+              onValues={this.updateNestedValues("sMART")}
+            />
           </Subcontainer>
         </Container>
         <Container>
