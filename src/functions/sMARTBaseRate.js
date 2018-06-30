@@ -134,19 +134,19 @@ export default ({
     add(
       compose(
         nullCheck,
-        valueAt(block - 1)(-0.04)
+        valueAt(tranche - 1)(-0.04)
       )((({ offTaker }) => sumNestedValues(offTaker))(adders))
     ),
     add(
       compose(
         nullCheck,
-        valueAt(block - 1)(-0.04)
+        valueAt(tranche - 1)(-0.04)
       )((({ location }) => sumNestedValues(location))(adders))
     ),
     add(
       compose(
         nullCheck,
-        valueAt(block - 1)(-0.04)
+        valueAt(tranche - 1)(-0.04)
       )((({ storage }) => energyStorageAdder(systemCapacity, storage))(adders))
     ),
     multiply(

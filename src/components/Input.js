@@ -20,9 +20,8 @@ const Input = styled.input`
 `
 
 const Label = styled.label`
-  opacity: ${({ isActive }) => (isActive ? "1" : "0.2")};
-  font-family: "Circular Std";
-  display: grid;
+  display: ${({ isActive }) => (isActive ? "grid" : "none")};
+  ${"" /* opacity: ${({ isActive }) => (isActive ? "1" : "0.2")}; */} font-family: "Circular Std";
   align-items: end;
   grid-template-columns: 1fr 5rem;
   border-bottom: 1px dotted black;

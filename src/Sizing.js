@@ -3,6 +3,7 @@ import uuidv1 from "uuid"
 import styled from "styled-components"
 import { last, lensPath, view } from "ramda"
 
+import { camelToSentence } from "./functions/helper"
 import mergeWithLatest from "./functions/mergeWithLatest"
 import Button from "./components/Button"
 import Form from "./components/Form"
@@ -141,7 +142,7 @@ export default class Sizing extends Component {
           .reduce(
             (acc, x) => ({
               ...acc,
-              x: arrays[x]
+              [x]: arrays[x]
             }),
             {}
           )
@@ -152,7 +153,7 @@ export default class Sizing extends Component {
           .reduce(
             (acc, x) => ({
               ...acc,
-              x: arrays[x]
+              [x]: arrays[x]
             }),
             {}
           )
@@ -353,6 +354,7 @@ export default class Sizing extends Component {
                   e.preventDefault()
                   this.handleSubmit()
                 }}
+                value="Submit to PVWatts"
               />
             </Form>
           </Subcontainer>
@@ -362,6 +364,9 @@ export default class Sizing extends Component {
             <Heading>
               <h4>Usage data</h4>
             </Heading>
+            <p>
+              <em>(Optional)</em> Enter customer usage data in kWh.
+            </p>
             <Form cols={2}>
               {Object.keys(usage).map(acct => (
                 <InputGroup
@@ -390,13 +395,18 @@ export default class Sizing extends Component {
             <Heading>
               <h4>System overview</h4>
             </Heading>
+            <p>
+              This section will be updated when you edit the columns to the
+              left. If <em>First year production</em> is 0, need to press{" "}
+              <strong>Submit</strong> button to fetch results from PVWatts.
+            </p>
             <Table>
               <tbody>
                 {Object.keys(this.props.global)
                   .filter(key => key !== "annualDegradation")
                   .map(key => (
                     <tr key={key}>
-                      <th scope="row">{key}</th>
+                      <th scope="row">{camelToSentence(key)}</th>
                       <td>{this.props.global[key]}</td>
                     </tr>
                   ))}

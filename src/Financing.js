@@ -8,6 +8,7 @@ import Grid from "./components/Grid"
 import SMARTBaseRateCalc from "./components/SMARTBaseRateCalc"
 import Switch from "./components/Switch"
 import Form from "./components/Form"
+import Button from "./components/Button"
 
 import { compose } from "ramda"
 import { formatAs, NUMBER, DOLLAR, PERCENT, CENT } from "./functions/formats"
@@ -28,7 +29,7 @@ const stateDisplay = {
   },
   sMART: {
     initialValue: "Initial value (first year)",
-    capYear: "Number of years (typically 10)"
+    capYear: "Number of years (either 10 or 20)"
   },
   netMetering: {
     initialValue: "Initial value (first year)",
@@ -205,6 +206,11 @@ class Financing extends Component {
             <Heading>
               <h4>SMART Base Rate</h4>
             </Heading>
+            <p>
+              Use this section to calculate the base rate for the SMART program,
+              the adder value will be reflected in the center column if you have
+              SMART enabled.
+            </p>
             <SMARTBaseRateCalc
               systemCapacity={this.state.systemCapacity}
               onValues={this.updateNestedValues("sMART")}
@@ -437,6 +443,7 @@ class Financing extends Component {
                     />
                   ))}
               </InputGroup>
+              <Button type="submit" value="Submit" />
             </Form>
           </Subcontainer>
         </Container>

@@ -1,19 +1,15 @@
 import React, { Component, Fragment } from "react"
 import styled from "styled-components"
 import sMARTBaseRate from "../functions/sMARTBaseRate"
-import { map } from "ramda"
+import { compose, map, mapObjIndexed } from "ramda"
 
+import { camelToSentence } from "../functions/helper"
 import { formatAs, parseNumFrom, CENT, NUMBER } from "../functions/formats"
 import Heading from "./Heading"
 import Input from "./Input"
 import InputGroup from "./InputGroup"
 import Checkbox from "./Checkbox"
 import Button from "./Button"
-
-const camelToSentence = str =>
-  str
-    .replace(/[A-Z]/g, match => ` ${match.toLowerCase()}`)
-    .replace(/^./, match => match.toUpperCase())
 
 const Data = styled.pre`
   font-family: "SF Mono";
@@ -23,6 +19,11 @@ const Data = styled.pre`
   border-radius: 6px;
   overflow: hidden;
 `
+
+const trace = msg => x => {
+  console.log(msg, x)
+  return x
+}
 
 const stateDisplay = {
   block: "Block",
@@ -168,14 +169,20 @@ export default class SMARTBaseRateCalc extends Component {
       adders
     } = this.state
     const { systemCapacity = "0" } = this.props
-    const parsedParams = map(parseNumFrom(NUMBER))({
+    const parsedParams = compose(
+      mapObjIndexed(
+        (val, key) => (key === "systemCapacity" ? val / 1000 : val)
+      ),
+      map(parseNumFrom(NUMBER))
+    )({
       block,
       tranche,
       systemCapacity
     })
 
     const finalParams = {
-      systemCapacity,
+      isLowIncome,
+      isNantucketElectric,
       ...parsedParams,
       adders: {
         ...adders,
@@ -288,7 +295,10 @@ export default class SMARTBaseRateCalc extends Component {
         ))}
         <Button
           type="button"
-          onClick={() => this.handleCalculate(sMARTBaseRate(finalParams))}
+          onClick={() => {
+            console.log(finalParams)
+            this.handleCalculate(sMARTBaseRate(finalParams))
+          }}
           value="Calculate"
         />
       </Fragment>

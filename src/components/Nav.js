@@ -37,9 +37,6 @@ export default () => (
       <li>
         <StyledLink to="/financing">Financing</StyledLink>
       </li>
-      <li>
-        <StyledLink to="/dummy">Dummy Table</StyledLink>
-      </li>
     </UL>
   </Nav>
 )
