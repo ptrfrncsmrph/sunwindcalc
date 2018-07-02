@@ -4,8 +4,6 @@ import { formatAs, parseFrom } from "../functions/formats"
 import { compose } from "ramda"
 import Checkbox from "./Checkbox"
 
-const id = x => x
-
 const Input = styled.input`
   padding: 0.2rem;
   font-size: 1rem;
