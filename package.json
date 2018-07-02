@@ -2,6 +2,7 @@
   "name": "may-2018-sunwind-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "fluture": "^8.0.2",
     "ramda": "^0.25.0",
