@@ -4,7 +4,7 @@ export const valueAt = curry(
   (time, change, initialValue) => (1 + change) ** time * initialValue
 )
 
-const range = x =>
+export const range = x =>
   Array(x)
     .fill("")
     .map((_, i) => i)
@@ -20,9 +20,9 @@ export const nullCheck = x =>
   isNaN(x) || x === undefined || x === null ? 0 : x
 
 export const capAt = curry((time, capWhen, x) => (time < capWhen ? x : 0))
-const startAt = curry((time, start, x) => (time >= start ? x : 0))
-const evalAt = curry(
-  (time, interval, start, x) => ((time + start) % interval === 0 ? x : 0)
+export const startAt = curry((time, start, x) => (time >= start - 1 ? x : 0))
+export const evalAt = curry(
+  (time, interval, start, x) => ((time - start + 1) % interval === 0 ? x : 0)
 )
 
 export const toNearest = curry((number, x) => Math.round(x / number) * number)
@@ -132,11 +132,12 @@ export const incentiveCalculations = years => ({
           multiply(valueAt(year)(annualDegradation)(firstYearProduction)),
           flip(subtract)(netMeterValue)
         )(initialValue))(sMART))(netMetering),
-    sREC: (({ initialValue, annualChange }) =>
+    sREC: (({ initialValue, annualChange, marketSector }) =>
       compose(
         capAt(year)(10),
         nullCheck,
         multiply(valueAt(year)(annualDegradation)(firstYearProduction)),
+        multiply(marketSector),
         valueAt(year)(annualChange)
       )(initialValue))(sREC),
     depreciation: (({ bonusDepreciationRate, taxRate }) =>

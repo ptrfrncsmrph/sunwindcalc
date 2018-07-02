@@ -16,7 +16,7 @@ import { formatAs, NUMBER, DOLLAR, PERCENT, CENT } from "./functions/formats"
 
 const stateDisplay = {
   firstYearProduction: "First year production (in kWh)",
-  annualDegradation: "Annual degradation factor (default is 0.5%)",
+  annualDegradation: "Annual degradation factor (default is -0.5%)",
   systemCapacity: "System capacity (Watts DC)",
   systemCost: "System cost",
   depreciation: {
@@ -26,7 +26,8 @@ const stateDisplay = {
   nantucketSolar: "Nantucket solar rebate (if applicable, usually $1000)",
   sREC: {
     initialValue: "Initial value (first year)",
-    annualChange: "Annual change (should be negative value)"
+    annualChange: "Annual change (should be negative value)",
+    marketSector: "Market sector factor (typically 80%)"
   },
   sMART: {
     initialValue: "Initial value (first year)",
@@ -67,7 +68,8 @@ const stateFormats = {
   nantucketSolar: DOLLAR,
   sREC: {
     initialValue: CENT,
-    annualChange: PERCENT
+    annualChange: PERCENT,
+    marketSector: PERCENT
   },
   sMART: {
     initialValue: CENT,
@@ -98,7 +100,7 @@ class Financing extends Component {
   state = {
     hasSubmitted: false,
     firstYearProduction: "69218",
-    annualDegradation: "0.5",
+    annualDegradation: "-0.5",
     systemCapacity: "7920",
     systemCost: "25500",
     federalTaxCredit: {
@@ -108,13 +110,14 @@ class Financing extends Component {
       isActive: true
     },
     depreciation: {
-      isActive: true,
+      isActive: false,
       taxRate: "35",
       bonusDepreciationRate: "40"
     },
     nantucketSolar: "0",
     sREC: {
       isActive: true,
+      marketSector: "80",
       initialValue: "0.23",
       annualChange: "0"
     },
@@ -124,19 +127,19 @@ class Financing extends Component {
       capYear: "10"
     },
     netMetering: {
-      isActive: false,
+      isActive: true,
       initialValue: "0.19",
       annualChange: "2"
     },
     maintenance: {
-      isActive: false,
+      isActive: true,
       initialValue: "300",
       annualChange: "2",
       interval: "4",
       start: "3"
     },
     insurance: {
-      isActive: false,
+      isActive: true,
       initialValue: "150",
       annualChange: "2"
     },
@@ -223,7 +226,9 @@ class Financing extends Component {
             <p>
               Use this section to calculate the base rate for the SMART program,
               the adder value will be reflected in the center column if you have
-              SMART enabled.
+              SMART enabled. <em>(Press </em>
+              <strong>Calculate</strong>
+              <em> at the bottom to show results)</em>
             </p>
             <SMARTBaseRateCalc
               systemCapacity={this.state.systemCapacity}

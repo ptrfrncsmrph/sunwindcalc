@@ -5,13 +5,13 @@ import Financing from "./Financing"
 import Sizing from "./Sizing"
 import Nav from "./components/Nav"
 import Dummy from "./containers/Dummy"
+import Home from "./Home"
 
 export default class App extends Component {
   state = {
-    firstYearProduction: "692099",
-    annualDegradation: "0.5",
-    systemCapacity: "7920",
-    systemCost: "25500"
+    firstYearProduction: "",
+    systemCapacity: "",
+    systemCost: ""
   }
   handleChange = key => value => {
     this.setState(() => ({ [key]: value }))
@@ -20,6 +20,7 @@ export default class App extends Component {
     return (
       <Fragment>
         <Nav />
+        <Route exact path="/" render={() => <Home />} />
         <Route
           path="/sizing"
           render={() => (
