@@ -1,5 +1,4 @@
 import { incentiveCalculations } from "./calculations"
-import { reduce, scan } from "ramda"
 
 // System 1 Nantucket, 55.04kW
 export const res = incentiveCalculations(25)({
@@ -80,7 +79,3 @@ export const res2 = incentiveCalculations(25)({
     years: 10
   }
 })
-
-res
-
-res2

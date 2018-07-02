@@ -1,4 +1,4 @@
-import { add, all, compose, equals, map, multiply, prop, reduce } from "ramda"
+import { add, compose, map, multiply, reduce } from "ramda"
 import { capAt, nullCheck, valueAt } from "./calculations"
 
 const sum = reduce(add, 0)

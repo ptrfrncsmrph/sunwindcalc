@@ -11,7 +11,6 @@ import Form from "./components/Form"
 import Button from "./components/Button"
 import ResultsTable from "./components/ResultsTable"
 
-import { compose } from "ramda"
 import { formatAs, NUMBER, DOLLAR, PERCENT, CENT } from "./functions/formats"
 
 const stateDisplay = {

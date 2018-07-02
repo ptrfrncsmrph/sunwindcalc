@@ -33,7 +33,7 @@ export const formatAs = fmt => x => {
 }
 
 const removeNonDigit = str =>
-  str.replace(/[^0-9|\.|\-]/g, "").replace(/^0*(\d+.*)/, "$1")
+  str.replace(/[^0-9|.|-]/g, "").replace(/^0*(\d+.*)/, "$1")
 
 const radiansToDegrees = radians => (radians * 180) / Math.PI
 

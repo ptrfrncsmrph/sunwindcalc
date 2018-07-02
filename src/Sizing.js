@@ -40,13 +40,6 @@ const MONTHS = [
   "Dec"
 ]
 
-const trace = msg => x => {
-  console.log(msg, x)
-  return x
-}
-
-const latest = obj => obj[last(Object.keys(obj))]
-
 const Table = styled.table`
   width: 100%;
   & tr {
@@ -75,8 +68,6 @@ const Data = styled.pre`
 const Err = Data.extend`
   background-color: tomato;
 `
-
-const Result = styled.div``
 
 const defaultAppState = {
   quantity: "20",

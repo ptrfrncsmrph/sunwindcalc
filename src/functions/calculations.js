@@ -9,11 +9,6 @@ export const range = x =>
     .fill("")
     .map((_, i) => i)
 
-const trace = msg => x => {
-  console.log(msg, x)
-  return x
-}
-
 // TODO: Convert all values to Maybe's instead of using this:
 // nullCheck :: !Number -> Number (??)
 export const nullCheck = x =>

@@ -1,5 +1,5 @@
 import React, { Fragment } from "react"
-import { head, compose, reduce, scan } from "ramda"
+import { head, compose, reduce } from "ramda"
 import styled from "styled-components"
 
 import parseState from "../functions/parseState"
@@ -9,7 +9,6 @@ import {
   formatAs,
   DOLLAR,
   NUMBER,
-  PERCENT,
   CENT
 } from "../functions/formats"
 import { camelToSentence } from "../functions/helper"

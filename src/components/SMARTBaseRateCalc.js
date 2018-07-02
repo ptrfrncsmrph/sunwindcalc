@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react"
-import styled from "styled-components"
 import sMARTBaseRate from "../functions/sMARTBaseRate"
 import { compose, map, mapObjIndexed } from "ramda"
 
@@ -10,20 +9,6 @@ import Input from "./Input"
 import InputGroup from "./InputGroup"
 import Checkbox from "./Checkbox"
 import Button from "./Button"
-
-const Data = styled.pre`
-  font-family: var(--mono-font);
-  white-space: normal;
-  padding: 0.5rem;
-  background-color: whitesmoke;
-  border-radius: 6px;
-  overflow: hidden;
-`
-
-const trace = msg => x => {
-  console.log(msg, x)
-  return x
-}
 
 const stateDisplay = {
   block: "Block",
@@ -38,21 +23,6 @@ const stateDisplay = {
     }
   }
 }
-
-const getParsedParams = ({ block, tranche, adders }) => ({
-  ...map(parseNumFrom(NUMBER))({
-    block,
-    tranche
-  }),
-  adders: {
-    ...adders,
-    storage: {
-      ...adders.storage,
-      capacity: parseNumFrom(NUMBER)(adders.storage.capacity),
-      usefulEnergy: parseNumFrom(NUMBER)(adders.storage.usefulEnergy)
-    }
-  }
-})
 
 export default class SMARTBaseRateCalc extends Component {
   state = {
@@ -193,8 +163,6 @@ export default class SMARTBaseRateCalc extends Component {
         }
       }
     }
-
-    const { onValues } = this.props
 
     return (
       <Fragment>

@@ -1,4 +1,4 @@
-import { compose, curry, map, negate } from "ramda"
+import { compose, negate } from "ramda"
 import { range, nullCheck, toNearest, valueAt } from "./calculations"
 
 // export const startAt = curry((time, start, x) => (time >= start - 1 ? x : 0))
@@ -78,7 +78,7 @@ it("Maintenance payments are calculated correctly", () => {
   const expectB = [0, 0, -10, 0, 0, -10, 0, 0, -10, 0]
   const expectC = [0, 0, 0, 0, 0, 0, 0, -10, -20, -40]
 
-  // expect(calcMaintenance(10)(inputA)).toEqual(expectA)
+  expect(calcMaintenance(10)(inputA)).toEqual(expectA)
   expect(calcMaintenance(10)(inputB)).toEqual(expectB)
   expect(calcMaintenance(10)(inputC)).toEqual(expectC)
 })
