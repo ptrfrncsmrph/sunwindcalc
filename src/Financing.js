@@ -54,6 +54,8 @@ const stateDisplay = {
 }
 
 const stateFormats = {
+  massTaxCredit: x => x,
+  federalTaxCredit: x => x,
   firstYearProduction: NUMBER,
   annualDegradation: PERCENT,
   systemCapacity: NUMBER,
@@ -99,6 +101,12 @@ class Financing extends Component {
     annualDegradation: "0.5",
     systemCapacity: "7920",
     systemCost: "25500",
+    federalTaxCredit: {
+      isActive: true
+    },
+    massTaxCredit: {
+      isActive: true
+    },
     depreciation: {
       isActive: true,
       taxRate: "35",
@@ -112,7 +120,7 @@ class Financing extends Component {
     },
     sMART: {
       isActive: false,
-      initialValue: "0.17",
+      initialValue: "0.36",
       capYear: "10"
     },
     netMetering: {
@@ -196,6 +204,8 @@ class Financing extends Component {
       systemCost,
       depreciation,
       nantucketSolar,
+      massTaxCredit,
+      federalTaxCredit,
       sREC,
       sMART,
       netMetering,
@@ -249,6 +259,33 @@ class Financing extends Component {
                     />
                   ))}
               </InputGroup>
+              <Heading>
+                <h4>Federal Tax Credit</h4>
+                <Switch
+                  height="2rem"
+                  on={federalTaxCredit.isActive}
+                  onClick={() =>
+                    this.setState(({ federalTaxCredit: { isActive } }) => ({
+                      federalTaxCredit: {
+                        ...federalTaxCredit,
+                        isActive: !isActive
+                      }
+                    }))
+                  }
+                />
+              </Heading>
+              <Heading>
+                <h4>State Tax Credit</h4>
+                <Switch
+                  height="2rem"
+                  on={massTaxCredit.isActive}
+                  onClick={() =>
+                    this.setState(({ massTaxCredit: { isActive } }) => ({
+                      massTaxCredit: { ...massTaxCredit, isActive: !isActive }
+                    }))
+                  }
+                />
+              </Heading>
               <Heading>
                 <h4>Depreciation</h4>
                 <Switch

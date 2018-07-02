@@ -52,5 +52,5 @@ body {
   font-family: 'SWMono';
   font-style: normal;
   font-weight: normal;
-  src: local("SWMono"), url("./assets/fonts/mono-generic-Light.otf") format("opentype");
+  src: local("SWMono"), url("./assets/fonts/mono-generic-Regular.otf") format("opentype");
 }

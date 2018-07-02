@@ -6,6 +6,8 @@ const stateFormats = {
   annualDegradation: PERCENT,
   systemCapacity: NUMBER,
   systemCost: DOLLAR,
+  massTaxCredit: x => x,
+  federalTaxCredit: x => x,
   depreciation: {
     taxRate: PERCENT,
     bonusDepreciationRate: PERCENT
@@ -47,6 +49,12 @@ it("parseState parses all leaves of state tree", () => {
     annualDegradation: "0.5",
     systemCapacity: "7920",
     systemCost: "25500",
+    massTaxCredit: {
+      isActive: true
+    },
+    federalTaxCredit: {
+      isActive: true
+    },
     depreciation: {
       isActive: true,
       taxRate: "35",
@@ -94,6 +102,12 @@ it("parseState parses all leaves of state tree", () => {
     annualDegradation: 0.005,
     systemCapacity: 7920,
     systemCost: 25500,
+    massTaxCredit: {
+      isActive: true
+    },
+    federalTaxCredit: {
+      isActive: true
+    },
     depreciation: {
       isActive: true,
       taxRate: 0.35,

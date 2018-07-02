@@ -12,6 +12,7 @@ const Container = styled.div`
 `
 
 const SVG = styled.svg`
+  shape-rendering: crispEdges;
   width: 1rem;
   height: 1rem;
   stroke-width: 2px;
@@ -26,7 +27,7 @@ const SVG = styled.svg`
 
 const CheckboxSVG = ({ checked }) => (
   <SVG checked={checked} viewbox="0 0 14 14">
-    <rect x="4" y="4" width="6" height="6" />
+    <rect x="3" y="3" width="8" height="8" />
     <rect x="1" y="1" width="12" height="12" />
   </SVG>
 )
