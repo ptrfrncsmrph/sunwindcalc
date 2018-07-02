@@ -9,6 +9,7 @@ import SMARTBaseRateCalc from "./components/SMARTBaseRateCalc"
 import Switch from "./components/Switch"
 import Form from "./components/Form"
 import Button from "./components/Button"
+import ResultsTable from "./components/ResultsTable"
 
 import { compose } from "ramda"
 import { formatAs, NUMBER, DOLLAR, PERCENT, CENT } from "./functions/formats"
@@ -93,6 +94,7 @@ const stateFormats = {
 
 class Financing extends Component {
   state = {
+    hasSubmitted: false,
     firstYearProduction: "69218",
     annualDegradation: "0.5",
     systemCapacity: "7920",
@@ -144,7 +146,8 @@ class Financing extends Component {
         (acc, e) => ({
           ...acc,
           [e]:
-            typeof initialState[e] !== "object"
+            typeof initialState[e] !== "object" &&
+            typeof initialState[e] !== "boolean"
               ? formatAs(stateFormats[e])(initialState[e])
               : Object.keys(initialState[e]).reduce(
                   (acc, x) => ({
@@ -166,6 +169,7 @@ class Financing extends Component {
   handleSubmit = e => {
     e.preventDefault()
     console.log("Submitted")
+    console.table()
   }
 
   updateValues = values => {
@@ -200,7 +204,7 @@ class Financing extends Component {
       loan
     } = this.state
     return (
-      <Grid cols={3}>
+      <Grid cols={4}>
         <Container>
           <Subcontainer>
             <Heading>
@@ -445,6 +449,16 @@ class Financing extends Component {
               </InputGroup>
               <Button type="submit" value="Submit" />
             </Form>
+          </Subcontainer>
+        </Container>
+        <Container span={2}>
+          <Subcontainer>
+            <Heading>
+              <h4>Results</h4>
+            </Heading>
+            {this.state.hasSubmitted && (
+              <ResultsTable fmts={stateFormats} parameters={this.state} />
+            )}
           </Subcontainer>
         </Container>
       </Grid>

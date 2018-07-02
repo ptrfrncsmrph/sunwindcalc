@@ -2,6 +2,7 @@ import React from "react"
 import { head } from "ramda"
 import styled from "styled-components"
 import { res2 as res } from "../functions/calculations.playground.js"
+import { incentiveCalculations } from "../functions/calculations"
 
 const Table = styled.table`
   & td,
@@ -14,7 +15,8 @@ const Table = styled.table`
   }
 `
 
-export default props => {
+export default ({ parameters }) => {
+  const res = parameters
   const keys = Object.keys(head(res)).filter(_ => true)
   console.log(res)
   return (

@@ -25,9 +25,9 @@ const SVG = styled.svg`
 `
 
 const CheckboxSVG = ({ checked }) => (
-  <SVG checked={checked} viewbox="0 0 16 16">
-    <rect x="3" y="3" width="10" height="10" />
-    <rect x="0" y="0" width="16" height="16" />
+  <SVG checked={checked} viewbox="0 0 14 14">
+    <rect x="4" y="4" width="6" height="6" />
+    <rect x="1" y="1" width="12" height="12" />
   </SVG>
 )
 

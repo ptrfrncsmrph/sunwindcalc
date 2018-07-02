@@ -21,7 +21,7 @@ const Input = styled.input`
 
 const Label = styled.label`
   display: ${({ isActive }) => (isActive ? "grid" : "none")};
-  ${"" /* opacity: ${({ isActive }) => (isActive ? "1" : "0.2")}; */} font-family: "Circular Std";
+  font-family: var(--sans-font);
   align-items: end;
   grid-template-columns: 1fr 5rem;
   border-bottom: 1px dotted black;

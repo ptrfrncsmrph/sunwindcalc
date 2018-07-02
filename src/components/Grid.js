@@ -8,9 +8,12 @@ export default styled.main`
   width: 100%;
   grid-template-columns: ${({ cols }) =>
     cols ? `repeat(${cols}, 1fr)` : "auto"};
+  min-height: 0;
+  min-width: 0;
+  overflow: scroll;
   & > * {
+    min-width: 0;
     overflow: scroll;
-    width: 100%;
     height: auto;
     max-height: 100%;
   }

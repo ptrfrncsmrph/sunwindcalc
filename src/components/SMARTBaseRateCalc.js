@@ -12,7 +12,7 @@ import Checkbox from "./Checkbox"
 import Button from "./Button"
 
 const Data = styled.pre`
-  font-family: "SF Mono";
+  font-family: var(--mono-font);
   white-space: normal;
   padding: 0.5rem;
   background-color: whitesmoke;
@@ -249,25 +249,29 @@ export default class SMARTBaseRateCalc extends Component {
           <h4>Location adder</h4>
         </Heading>
         {Object.keys(this.state.adders.location).map(key => (
-          <Checkbox
-            checked={adders.location[key].isActive}
-            handleChange={() =>
-              this.setState(({ adders: { location } }) => ({
-                adders: {
-                  ...adders,
-                  location: {
-                    ...location,
-                    [key]: {
-                      ...location[key],
-                      isActive: !location[key].isActive
+          <Fragment>
+            <Checkbox
+              checked={adders.location[key].isActive}
+              handleChange={() =>
+                this.setState(({ adders: { location } }) => ({
+                  adders: {
+                    ...adders,
+                    location: {
+                      ...location,
+                      [key]: {
+                        ...location[key],
+                        isActive: !location[key].isActive
+                      }
                     }
                   }
-                }
-              }))
-            }
-            key={key}
-            label={camelToSentence(key)}
-          />
+                }))
+              }
+              key={key}
+              label={`${camelToSentence(key)} (${formatAs(CENT)(
+                adders.location[key].initialValue
+              )})`}
+            />
+          </Fragment>
         ))}
         <Heading>
           <h4>Off-taker adder</h4>
@@ -290,7 +294,9 @@ export default class SMARTBaseRateCalc extends Component {
               }))
             }
             key={key}
-            label={camelToSentence(key)}
+            label={`${camelToSentence(key)} (${formatAs(CENT)(
+              adders.offTaker[key].initialValue
+            )})`}
           />
         ))}
         <Button

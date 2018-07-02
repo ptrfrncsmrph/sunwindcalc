@@ -4,15 +4,18 @@ import styled from "styled-components"
 
 const StyledLink = styled(Link)`
   text-decoration: none;
+  color: white;
+  &:hover {
+    color: tomato;
+  }
 `
 
 const Nav = styled.nav`
   position: fixed;
-  padding: 0.5rem;
+  padding: 1rem;
   top: 0;
   width: 100vw;
-  background-color: #ecf0f1ff;
-  box-shadow: 0 2px 10px #ecf0f166;
+  background-color: black;
   z-index: 10;
 `
 

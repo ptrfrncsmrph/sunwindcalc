@@ -92,6 +92,32 @@ export const incentiveCalculations = years => ({
   loan
 }) =>
   range(years).map(year => ({
+    maintenance: (({ initialValue, annualChange, interval, start }) =>
+      compose(
+        nullCheck,
+        negate,
+        toNearest(10),
+        startAt(year)(start),
+        evalAt(year)(interval)(start),
+        valueAt(year)(annualChange)
+      )(initialValue))(maintenance),
+    insurance: (({ initialValue, annualChange }) =>
+      compose(
+        nullCheck,
+        negate,
+        toNearest(10),
+        valueAt(year)(annualChange)
+      )(initialValue))(insurance),
+    loan: (({ years, interest, principal }) =>
+      compose(
+        nullCheck,
+        capAt(year)(years),
+        negate,
+        multiply(12)
+      )(
+        (principal * (1 + interest / 12) ** (years * 12) * (interest / 12)) /
+          ((1 + interest / 12) ** (years * 12) - 1)
+      ))(loan),
     netMetering: (({ initialValue, annualChange }) =>
       compose(
         nullCheck,
@@ -139,31 +165,5 @@ export const incentiveCalculations = years => ({
     nantucketSolar: compose(
       capAt(year)(1),
       nullCheck
-    )(nantucketSolar),
-    maintenance: (({ initialValue, annualChange, interval, start }) =>
-      compose(
-        nullCheck,
-        negate,
-        toNearest(10),
-        startAt(year)(start),
-        evalAt(year)(interval)(start),
-        valueAt(year)(annualChange)
-      )(initialValue))(maintenance),
-    insurance: (({ initialValue, annualChange }) =>
-      compose(
-        nullCheck,
-        negate,
-        toNearest(10),
-        valueAt(year)(annualChange)
-      )(initialValue))(insurance),
-    loan: (({ years, interest, principal }) =>
-      compose(
-        nullCheck,
-        capAt(year)(years),
-        negate,
-        multiply(12)
-      )(
-        (principal * (1 + interest / 12) ** (years * 12) * (interest / 12)) /
-          ((1 + interest / 12) ** (years * 12) - 1)
-      ))(loan)
+    )(nantucketSolar)
   }))

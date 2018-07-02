@@ -64,7 +64,7 @@ const Table = styled.table`
 `
 
 const Data = styled.pre`
-  font-family: "SF Mono";
+  font-family: var(--mono-font);
   white-space: normal;
   padding: 0.5rem;
   background-color: whitesmoke;
@@ -247,6 +247,15 @@ export default class Sizing extends Component {
   }
 
   handleSubmit = () => {
+    this.setState(({ arrays }) => ({
+      arrays: Object.keys(arrays).reduce(
+        (acc, x) => ({
+          ...acc,
+          [x]: { ...arrays[x], error: "" }
+        }),
+        {}
+      )
+    }))
     const { arrays } = this.state
     Object.keys(arrays).map(arr =>
       fetchData(arrays[arr]).fork(
@@ -399,6 +408,11 @@ export default class Sizing extends Component {
               This section will be updated when you edit the columns to the
               left. If <em>First year production</em> is 0, need to press{" "}
               <strong>Submit</strong> button to fetch results from PVWatts.
+            </p>
+            <p>
+              <em>System cost</em> is based on the <em>Target cost per watt</em>{" "}
+              in the left column. The cost and production estimates from PVWatts
+              can be edited in the <strong>Financing</strong> page.
             </p>
             <Table>
               <tbody>

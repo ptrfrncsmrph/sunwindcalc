@@ -12,6 +12,7 @@ const Rect = styled.rect`
 
 const SVG = styled.svg`
   display: inline-block;
+  height: ${({ height = "auto" }) => height};
 `
 
 export default class Switch extends Component {
