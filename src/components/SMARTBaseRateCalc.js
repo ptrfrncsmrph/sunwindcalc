@@ -93,6 +93,16 @@ export default class SMARTBaseRateCalc extends Component {
   // this is one of the worst offenders. Apologies
   // Future Pete. Sincerely, Past Pete
   handleCalculate = params => {
+    console.log(
+      Object.keys(params)
+        .map(key => ({
+          [key]:
+            key === "initialValue"
+              ? formatAs(CENT)(params[key])
+              : formatAs(NUMBER)(params[key])
+        }))
+        .reduce((acc, x) => ({ ...acc, ...x }), {})
+    )
     this.props.onValues(
       Object.keys(params)
         .map(key => ({
@@ -138,13 +148,8 @@ export default class SMARTBaseRateCalc extends Component {
       isNantucketElectric,
       adders
     } = this.state
-    const { systemCapacity = "0" } = this.props
-    const parsedParams = compose(
-      mapObjIndexed(
-        (val, key) => (key === "systemCapacity" ? val / 1000 : val)
-      ),
-      map(parseNumFrom(NUMBER))
-    )({
+    const { systemCapacity } = this.props
+    const parsedParams = compose(map(parseNumFrom(NUMBER)))({
       block,
       tranche,
       systemCapacity
