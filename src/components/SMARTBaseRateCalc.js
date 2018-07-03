@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react"
 import sMARTBaseRate from "../functions/sMARTBaseRate"
-import { compose, map, mapObjIndexed } from "ramda"
+import { compose, map } from "ramda"
 
 import { camelToSentence } from "../functions/helper"
 import { formatAs, parseNumFrom, CENT, NUMBER } from "../functions/formats"
