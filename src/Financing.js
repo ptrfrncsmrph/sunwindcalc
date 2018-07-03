@@ -178,8 +178,6 @@ class Financing extends Component {
 
   handleSubmit = e => {
     e.preventDefault()
-    console.log("Submitted")
-    console.table()
   }
 
   updateValues = values => {

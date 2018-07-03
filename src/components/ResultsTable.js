@@ -145,7 +145,9 @@ export default ({ fmts, parameters }) => {
                 (parseNumFrom(DOLLAR)(parameters.systemCost) -
                   head(res).federalTaxCredit -
                   head(res).massTaxCredit) /
-                (head(res).sREC + head(res).sMART + head(res).netMetering)
+                ((keys.includes("sREC") ? head(res).sREC : 0) +
+                  (keys.includes("sMART") ? head(res).sMART : 0) +
+                  (keys.includes("netMetering") ? head(res).netMetering : 0))
               ).toFixed(2)}{" "}
               year(s)
             </td>
