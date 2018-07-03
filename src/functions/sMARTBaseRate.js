@@ -31,17 +31,21 @@ const sumNestedValues = compose(
 //   isActive: boolean
 // }
 
+// usefulEnergy and storageUseful energy are actually hours at rated capacity
 export const energyStorageAdder = (
   systemCapacity,
   { capacity: storageCapacity, usefulEnergy: storageUsefulEnergy, isActive }
 ) =>
   isActive
-    ? (systemCapacity /
-        storageCapacity /
-        (systemCapacity / storageCapacity +
-          Math.exp(0.7 - 8 * (systemCapacity / storageCapacity)))) *
-      (0.8 + 0.5 * Math.log(storageUsefulEnergy / storageCapacity)) *
-      0.045
+    ? Math.max(
+        0.0247,
+        (storageCapacity /
+          systemCapacity /
+          (storageCapacity / systemCapacity +
+            Math.exp(0.7 - 8 * (storageCapacity / systemCapacity)))) *
+          (0.8 + 0.5 * Math.log(storageUsefulEnergy)) *
+          0.045
+      )
     : 0
 
 //  {

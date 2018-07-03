@@ -1,4 +1,14 @@
-import sMARTBaseRate from "./sMARTBaseRate"
+import sMARTBaseRate, { energyStorageAdder } from "./sMARTBaseRate"
+
+it("energyStorageAdder works as expected", () => {
+  expect(
+    energyStorageAdder(10000, {
+      capacity: 8000,
+      usefulEnergy: 3,
+      isActive: true
+    })
+  ).toBeCloseTo(0.0605)
+})
 
 const sMART = {
   systemCapacity: 10000,
