@@ -11,21 +11,31 @@ import Form from "./components/Form"
 import Button from "./components/Button"
 import ResultsTable from "./components/ResultsTable"
 
-import { formatAs, NUMBER, DOLLAR, PERCENT, CENT } from "./functions/formats"
+import {
+  formatAs,
+  NUMBER,
+  DOLLAR,
+  PERCENT,
+  CENT
+} from "./functions/formats"
 
 const stateDisplay = {
   firstYearProduction: "First year production (in kWh)",
-  annualDegradation: "Annual degradation factor (default is -0.5%)",
+  annualDegradation:
+    "Annual degradation factor (default is -0.5%)",
   systemCapacity: "System capacity (Watts DC)",
   systemCost: "System cost",
   depreciation: {
     taxRate: "Tax rate",
-    bonusDepreciationRate: "Bonus depreciation rate (claimed first year)"
+    bonusDepreciationRate:
+      "Bonus depreciation rate (claimed first year)"
   },
-  nantucketSolar: "Nantucket solar rebate (if applicable, usually $1000)",
+  nantucketSolar:
+    "Nantucket solar rebate (if applicable, usually $1000)",
   sREC: {
     initialValue: "Initial value (first year)",
-    annualChange: "Annual change (should be negative value)",
+    annualChange:
+      "Annual change (should be negative value)",
     marketSector: "Market sector factor (typically 80%)"
   },
   sMART: {
@@ -39,7 +49,8 @@ const stateDisplay = {
   maintenance: {
     initialValue: "Initial maintenance charge",
     annualChange: "Annual change (will be rounded)",
-    interval: "How often will customer be charged (i.e., every _ years)?",
+    interval:
+      "How often will customer be charged (i.e., every _ years)?",
     start: "What year will customer start to be charged?"
   },
   insurance: {
@@ -163,8 +174,11 @@ class Financing extends Component {
                   (acc, x) => ({
                     ...acc,
                     [x]:
-                      typeof initialState[e][x] !== "boolean"
-                        ? formatAs(stateFormats[e][x])(initialState[e][x])
+                      typeof initialState[e][x] !==
+                      "boolean"
+                        ? formatAs(stateFormats[e][x])(
+                            initialState[e][x]
+                          )
                         : initialState[e][x]
                   }),
                   {}
@@ -221,8 +235,9 @@ class Financing extends Component {
               <h4>SMART Base Rate</h4>
             </Heading>
             <p>
-              Use this section to calculate the base rate for the SMART program,
-              the adder value will be reflected in the center column if you have
+              Use this section to calculate the base rate
+              for the SMART program, the adder value will be
+              reflected in the center column if you have
               SMART enabled. <em>(Press </em>
               <strong>Calculate</strong>
               <em> at the bottom to show results)</em>
@@ -250,7 +265,10 @@ class Financing extends Component {
                 onValues={this.updateValues}
               >
                 {Object.keys(this.state)
-                  .filter(key => typeof this.state[key] !== "object")
+                  .filter(
+                    key =>
+                      typeof this.state[key] !== "object"
+                  )
                   .map(key => (
                     <Input
                       key={key}
@@ -267,12 +285,16 @@ class Financing extends Component {
                   height="2rem"
                   on={federalTaxCredit.isActive}
                   onClick={() =>
-                    this.setState(({ federalTaxCredit: { isActive } }) => ({
-                      federalTaxCredit: {
-                        ...federalTaxCredit,
-                        isActive: !isActive
-                      }
-                    }))
+                    this.setState(
+                      ({
+                        federalTaxCredit: { isActive }
+                      }) => ({
+                        federalTaxCredit: {
+                          ...federalTaxCredit,
+                          isActive: !isActive
+                        }
+                      })
+                    )
                   }
                 />
               </Heading>
@@ -282,9 +304,16 @@ class Financing extends Component {
                   height="2rem"
                   on={massTaxCredit.isActive}
                   onClick={() =>
-                    this.setState(({ massTaxCredit: { isActive } }) => ({
-                      massTaxCredit: { ...massTaxCredit, isActive: !isActive }
-                    }))
+                    this.setState(
+                      ({
+                        massTaxCredit: { isActive }
+                      }) => ({
+                        massTaxCredit: {
+                          ...massTaxCredit,
+                          isActive: !isActive
+                        }
+                      })
+                    )
                   }
                 />
               </Heading>
@@ -294,19 +323,29 @@ class Financing extends Component {
                   height="2rem"
                   on={depreciation.isActive}
                   onClick={() =>
-                    this.setState(({ depreciation: { isActive } }) => ({
-                      depreciation: { ...depreciation, isActive: !isActive }
-                    }))
+                    this.setState(
+                      ({ depreciation: { isActive } }) => ({
+                        depreciation: {
+                          ...depreciation,
+                          isActive: !isActive
+                        }
+                      })
+                    )
                   }
                 />
               </Heading>
               <InputGroup
                 values={depreciation}
-                onValues={this.updateNestedValues("depreciation")}
+                onValues={this.updateNestedValues(
+                  "depreciation"
+                )}
               >
                 {Object.keys(this.state.depreciation)
                   .filter(
-                    key => typeof this.state.depreciation[key] === "string"
+                    key =>
+                      typeof this.state.depreciation[
+                        key
+                      ] === "string"
                   )
                   .map(key => (
                     <Input
@@ -324,9 +363,14 @@ class Financing extends Component {
                   height="2rem"
                   on={sREC.isActive}
                   onClick={() =>
-                    this.setState(({ sREC: { isActive } }) => ({
-                      sREC: { ...sREC, isActive: !isActive }
-                    }))
+                    this.setState(
+                      ({ sREC: { isActive } }) => ({
+                        sREC: {
+                          ...sREC,
+                          isActive: !isActive
+                        }
+                      })
+                    )
                   }
                 />
               </Heading>
@@ -335,7 +379,11 @@ class Financing extends Component {
                 onValues={this.updateNestedValues("sREC")}
               >
                 {Object.keys(this.state.sREC)
-                  .filter(key => typeof this.state.sREC[key] === "string")
+                  .filter(
+                    key =>
+                      typeof this.state.sREC[key] ===
+                      "string"
+                  )
                   .map(key => (
                     <Input
                       key={key}
@@ -352,9 +400,14 @@ class Financing extends Component {
                   height="2rem"
                   on={sMART.isActive}
                   onClick={() =>
-                    this.setState(({ sMART: { isActive } }) => ({
-                      sMART: { ...sMART, isActive: !isActive }
-                    }))
+                    this.setState(
+                      ({ sMART: { isActive } }) => ({
+                        sMART: {
+                          ...sMART,
+                          isActive: !isActive
+                        }
+                      })
+                    )
                   }
                 />
               </Heading>
@@ -363,7 +416,11 @@ class Financing extends Component {
                 onValues={this.updateNestedValues("sMART")}
               >
                 {Object.keys(this.state.sMART)
-                  .filter(x => typeof this.state.sMART[x] === "string")
+                  .filter(
+                    x =>
+                      typeof this.state.sMART[x] ===
+                      "string"
+                  )
                   .map(key => (
                     <Input
                       key={key}
@@ -380,24 +437,37 @@ class Financing extends Component {
                   height="2rem"
                   on={netMetering.isActive}
                   onClick={() =>
-                    this.setState(({ netMetering: { isActive } }) => ({
-                      netMetering: { ...netMetering, isActive: !isActive }
-                    }))
+                    this.setState(
+                      ({ netMetering: { isActive } }) => ({
+                        netMetering: {
+                          ...netMetering,
+                          isActive: !isActive
+                        }
+                      })
+                    )
                   }
                 />
               </Heading>
               <InputGroup
                 values={netMetering}
-                onValues={this.updateNestedValues("netMetering")}
+                onValues={this.updateNestedValues(
+                  "netMetering"
+                )}
               >
                 {Object.keys(this.state.netMetering)
-                  .filter(x => typeof this.state.netMetering[x] === "string")
+                  .filter(
+                    x =>
+                      typeof this.state.netMetering[x] ===
+                      "string"
+                  )
                   .map(key => (
                     <Input
                       key={key}
                       name={key}
                       title={stateDisplay.netMetering[key]}
-                      value={String(this.state.netMetering[key])}
+                      value={String(
+                        this.state.netMetering[key]
+                      )}
                       fmt={stateFormats.netMetering[key]}
                     />
                   ))}
@@ -408,24 +478,37 @@ class Financing extends Component {
                   height="2rem"
                   on={maintenance.isActive}
                   onClick={() =>
-                    this.setState(({ maintenance: { isActive } }) => ({
-                      maintenance: { ...maintenance, isActive: !isActive }
-                    }))
+                    this.setState(
+                      ({ maintenance: { isActive } }) => ({
+                        maintenance: {
+                          ...maintenance,
+                          isActive: !isActive
+                        }
+                      })
+                    )
                   }
                 />
               </Heading>
               <InputGroup
                 values={maintenance}
-                onValues={this.updateNestedValues("maintenance")}
+                onValues={this.updateNestedValues(
+                  "maintenance"
+                )}
               >
                 {Object.keys(this.state.maintenance)
-                  .filter(x => typeof this.state.maintenance[x] === "string")
+                  .filter(
+                    x =>
+                      typeof this.state.maintenance[x] ===
+                      "string"
+                  )
                   .map(key => (
                     <Input
                       key={key}
                       name={key}
                       title={stateDisplay.maintenance[key]}
-                      value={String(this.state.maintenance[key])}
+                      value={String(
+                        this.state.maintenance[key]
+                      )}
                       fmt={stateFormats.maintenance[key]}
                     />
                   ))}
@@ -436,24 +519,37 @@ class Financing extends Component {
                   height="2rem"
                   on={insurance.isActive}
                   onClick={() =>
-                    this.setState(({ insurance: { isActive } }) => ({
-                      insurance: { ...insurance, isActive: !isActive }
-                    }))
+                    this.setState(
+                      ({ insurance: { isActive } }) => ({
+                        insurance: {
+                          ...insurance,
+                          isActive: !isActive
+                        }
+                      })
+                    )
                   }
                 />
               </Heading>
               <InputGroup
                 values={insurance}
-                onValues={this.updateNestedValues("insurance")}
+                onValues={this.updateNestedValues(
+                  "insurance"
+                )}
               >
                 {Object.keys(this.state.insurance)
-                  .filter(x => typeof this.state.insurance[x] === "string")
+                  .filter(
+                    x =>
+                      typeof this.state.insurance[x] ===
+                      "string"
+                  )
                   .map(key => (
                     <Input
                       key={key}
                       name={key}
                       title={stateDisplay.insurance[key]}
-                      value={String(this.state.insurance[key])}
+                      value={String(
+                        this.state.insurance[key]
+                      )}
                       fmt={stateFormats.insurance[key]}
                     />
                   ))}
@@ -464,9 +560,14 @@ class Financing extends Component {
                   height="2rem"
                   on={loan.isActive}
                   onClick={() =>
-                    this.setState(({ loan: { isActive } }) => ({
-                      loan: { ...loan, isActive: !isActive }
-                    }))
+                    this.setState(
+                      ({ loan: { isActive } }) => ({
+                        loan: {
+                          ...loan,
+                          isActive: !isActive
+                        }
+                      })
+                    )
                   }
                 />
               </Heading>
@@ -475,7 +576,10 @@ class Financing extends Component {
                 onValues={this.updateNestedValues("loan")}
               >
                 {Object.keys(this.state.loan)
-                  .filter(x => typeof this.state.loan[x] === "string")
+                  .filter(
+                    x =>
+                      typeof this.state.loan[x] === "string"
+                  )
                   .map(key => (
                     <Input
                       key={key}
@@ -496,7 +600,10 @@ class Financing extends Component {
               <h4>Results</h4>
             </Heading>
             {this.state.hasSubmitted && (
-              <ResultsTable fmts={stateFormats} parameters={this.state} />
+              <ResultsTable
+                fmts={stateFormats}
+                parameters={this.state}
+              />
             )}
           </Subcontainer>
         </Container>

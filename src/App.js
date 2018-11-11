@@ -23,7 +23,10 @@ export default class App extends Component {
         <Route
           path="/sizing"
           render={() => (
-            <Sizing changeGlobal={this.handleChange} global={this.state} />
+            <Sizing
+              changeGlobal={this.handleChange}
+              global={this.state}
+            />
           )}
         />
         <Route

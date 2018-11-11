@@ -1,4 +1,6 @@
-const mergeWithLatest = (fromLocal = {}, fromApp) =>
+import { mergeDeepRight } from "ramda"
+
+const mergeWithLatest = (fromLocal, fromApp) =>
   fromLocal
     ? Object.keys(fromApp).reduce(
         (acc, key) => ({

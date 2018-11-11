@@ -9,7 +9,8 @@ const Input = styled.input`
   font-size: 1rem;
   border-radius: 6px;
   border-width: 0;
-  background-color: ${({ empty }) => (empty ? "#e74c3c33" : "transparent")}
+  background-color: ${({ empty }) =>
+    empty ? "#e74c3c33" : "transparent"}
   text-align: right;
   &:focus {
     background-color: #f39c1233;
@@ -18,7 +19,8 @@ const Input = styled.input`
 `
 
 const Label = styled.label`
-  display: ${({ isActive }) => (isActive ? "grid" : "none")};
+  display: ${({ isActive }) =>
+    isActive ? "grid" : "none"};
   font-family: var(--sans-font);
   align-items: end;
   grid-template-columns: 1fr 5rem;
@@ -52,7 +54,9 @@ export default ({
           value={value || ""}
           empty={value === ""}
           onChange={e => update(e.target.value)}
-          onFocus={e => update(parseFrom(fmt)(e.target.value))}
+          onFocus={e =>
+            update(parseFrom(fmt)(e.target.value))
+          }
           onBlur={e =>
             compose(
               update,
