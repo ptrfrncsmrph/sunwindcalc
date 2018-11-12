@@ -1,5 +1,3 @@
-import { mergeDeepRight } from "ramda"
-
 const mergeWithLatest = (fromLocal, fromApp) =>
   fromLocal
     ? Object.keys(fromApp).reduce(
@@ -7,7 +5,10 @@ const mergeWithLatest = (fromLocal, fromApp) =>
           ...acc,
           [key]:
             typeof fromApp[key] === "object"
-              ? mergeWithLatest(fromLocal[key], fromApp[key])
+              ? mergeWithLatest(
+                  fromLocal[key],
+                  fromApp[key]
+                )
               : fromLocal[key] || fromApp[key]
         }),
         {}
